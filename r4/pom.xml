@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>health-apis-informational-endpoints</artifactId>
+    <groupId>gov.va.api.health</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>r4</artifactId>
+  <properties>
+    <r4.version>2.0.11</r4.version>
+    <service-auto-config.version>3.0.11</service-auto-config.version>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>gov.va.api.health</groupId>
+      <artifactId>r4</artifactId>
+      <version>${r4.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>gov.va.api.health</groupId>
+      <artifactId>service-auto-config</artifactId>
+      <version>${service-auto-config.version}</version>
+    </dependency>
+  </dependencies>
+</project>
