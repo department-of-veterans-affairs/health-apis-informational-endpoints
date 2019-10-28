@@ -15,6 +15,7 @@ import lombok.SneakyThrows;
 import org.junit.Test;
 
 public class MetadataControllerTest {
+
   @SneakyThrows
   private String pretty(Capability capability) {
     return JacksonConfig.createMapper()
@@ -51,24 +52,22 @@ public class MetadataControllerTest {
   @SneakyThrows
   public void read() {
     CapabilityStatementProperties properties = properties();
-
     List<Capability.CapabilityResource> resources =
         Stream.of(
-                MetadataController.SupportedResource.builder()
+                SupportedResource.builder()
                     .type("Search By Patient Service")
                     .searchBy(MetadataController.SearchParam.PATIENT)
                     .profile("https://fhir.com/r4/test.html")
                     .documentation(properties.getResourceDocumentation())
                     .build(),
-                MetadataController.SupportedResource.builder()
+                SupportedResource.builder()
                     .type("Read Only Service")
                     .profile("https://fhir.com/r4/test.html")
                     .documentation(properties.getResourceDocumentation())
                     .build())
-            .map(MetadataController.SupportedResource::asResource)
+            .map(SupportedResource::asResource)
             .collect(Collectors.toList());
-
-    MetadataController controller = new MetadataController(properties, resources);
+    TestController controller = new TestController(properties, resources);
     Capability old =
         JacksonConfig.createMapper()
             .readValue(getClass().getResourceAsStream("/capability.json"), Capability.class);
@@ -77,6 +76,14 @@ public class MetadataControllerTest {
     } catch (AssertionError e) {
       System.out.println(e.getMessage());
       throw e;
+    }
+  }
+
+  private class TestController extends MetadataController {
+
+    TestController(
+        CapabilityStatementProperties properties, List<Capability.CapabilityResource> resources) {
+      super(properties, resources);
     }
   }
 }

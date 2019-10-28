@@ -3,7 +3,6 @@ package gov.va.api.health.r4.informative.wellknown;
 import gov.va.api.health.r4.api.information.WellKnown;
 import gov.va.api.health.r4.informative.capability.CapabilityStatementProperties;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
   value = {".well-known/smart-configuration"},
   produces = {"application/json", "application/fhir+json", "application/json+fhir"}
 )
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
-class WellKnownController {
+@AllArgsConstructor
+public abstract class WellKnownController {
   private final WellKnownProperties wellKnownProperties;
   private final CapabilityStatementProperties capabilityStatementProperties;
 
   @GetMapping
-  WellKnown read() {
+  protected WellKnown read() {
     return WellKnown.builder()
         .authorizationEndpoint(capabilityStatementProperties.getSecurity().getAuthorizeEndpoint())
         .tokenEndpoint(capabilityStatementProperties.getSecurity().getTokenEndpoint())

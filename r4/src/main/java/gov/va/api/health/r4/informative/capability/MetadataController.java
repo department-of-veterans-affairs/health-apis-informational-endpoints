@@ -11,22 +11,14 @@ import gov.va.api.health.r4.api.datatypes.ContactPoint.ContactPointSystem;
 import gov.va.api.health.r4.api.elements.Extension;
 import gov.va.api.health.r4.api.resources.Capability;
 import gov.va.api.health.r4.api.resources.Capability.CapabilityResource;
-import gov.va.api.health.r4.api.resources.Capability.ResourceInteraction;
 import gov.va.api.health.r4.api.resources.Capability.Rest;
 import gov.va.api.health.r4.api.resources.Capability.RestMode;
 import gov.va.api.health.r4.api.resources.Capability.SearchParamType;
 import gov.va.api.health.r4.api.resources.Capability.Security;
 import gov.va.api.health.r4.api.resources.Capability.Software;
-import gov.va.api.health.r4.api.resources.Capability.TypeRestfulInteraction;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Singular;
-import lombok.Value;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,8 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
   value = {"/metadata"},
   produces = {"application/json", "application/json+fhir", "application/fhir+json"}
 )
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
-class MetadataController {
+@AllArgsConstructor
+public abstract class MetadataController {
 
   private final CapabilityStatementProperties properties;
 
@@ -57,7 +49,7 @@ class MetadataController {
   }
 
   @GetMapping
-  Capability read() {
+  protected Capability read() {
     return Capability.builder()
         .resourceType("Capability")
         .id(properties.getId())
@@ -131,59 +123,5 @@ class MetadataController {
     private final String param;
 
     private final SearchParamType type;
-  }
-
-  @Value
-  @Builder
-  public static class SupportedResource {
-
-    String type;
-
-    String profile;
-
-    String documentation;
-
-    @Singular("searchBy")
-    Set<SearchParam> search;
-
-    CapabilityResource asResource() {
-      return CapabilityResource.builder()
-          .type(type)
-          .interaction(interactions())
-          .searchParam(searchParams())
-          .profile(profile)
-          .build();
-    }
-
-    private List<ResourceInteraction> interactions() {
-      if (search.isEmpty()) {
-        return singletonList(readable());
-      }
-      return asList(searchable(), readable());
-    }
-
-    private ResourceInteraction readable() {
-      return ResourceInteraction.builder()
-          .code(TypeRestfulInteraction.read)
-          .documentation(documentation)
-          .build();
-    }
-
-    private List<Capability.SearchParam> searchParams() {
-      if (search.isEmpty()) {
-        return null;
-      }
-      return search
-          .stream()
-          .map(s -> Capability.SearchParam.builder().name(s.param()).type(s.type()).build())
-          .collect(Collectors.toList());
-    }
-
-    private ResourceInteraction searchable() {
-      return ResourceInteraction.builder()
-          .code(TypeRestfulInteraction.search_type)
-          .documentation(documentation)
-          .build();
-    }
   }
 }
