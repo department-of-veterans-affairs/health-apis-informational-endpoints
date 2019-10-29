@@ -46,8 +46,8 @@ public class WellKnownControllerTest {
   @Test
   @SneakyThrows
   public void read() {
-    TestWellKnownController controller =
-        new TestWellKnownController(wellKnownProperties(), conformanceProperties());
+    WellKnownController controller =
+        new WellKnownController(wellKnownProperties(), conformanceProperties());
     try {
       assertThat(pretty(controller.read())).isEqualTo(pretty(actual()));
     } catch (AssertionError e) {
@@ -67,14 +67,5 @@ public class WellKnownControllerTest {
         .responseTypeSupported(asList("code", "refresh-token"))
         .scopesSupported(asList("patient/Test.read", "launch/patient", "offline_access"))
         .build();
-  }
-
-  private class TestWellKnownController extends WellKnownController {
-
-    public TestWellKnownController(
-        WellKnownProperties wellKnownProperties,
-        CapabilityStatementProperties capabilityStatementProperties) {
-      super(wellKnownProperties, capabilityStatementProperties);
-    }
   }
 }

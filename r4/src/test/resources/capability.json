@@ -68,11 +68,11 @@
                     "interaction" : [
                         {
                             "code" : "search-type",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+                            "documentation" : "Implemented per specification. This is configurable. See http://hl7.org/fhir/R4/http.html"
                         },
                         {
                             "code" : "read",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+                            "documentation" : "Implemented per specification. This is configurable. See http://hl7.org/fhir/R4/http.html"
                         }
                     ],
                     "searchParam" : [
@@ -88,7 +88,7 @@
                     "interaction" : [
                         {
                             "code" : "read",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/R4/http.html"
+                            "documentation" : "Implemented per specification. Also configurable. See http://hl7.org/fhir/R4/http.html"
                         }
                     ]
                 }

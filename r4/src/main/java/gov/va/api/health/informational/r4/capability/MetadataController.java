@@ -10,7 +10,6 @@ import gov.va.api.health.r4.api.datatypes.ContactPoint;
 import gov.va.api.health.r4.api.datatypes.ContactPoint.ContactPointSystem;
 import gov.va.api.health.r4.api.elements.Extension;
 import gov.va.api.health.r4.api.resources.Capability;
-import gov.va.api.health.r4.api.resources.Capability.CapabilityResource;
 import gov.va.api.health.r4.api.resources.Capability.Rest;
 import gov.va.api.health.r4.api.resources.Capability.RestMode;
 import gov.va.api.health.r4.api.resources.Capability.SearchParamType;
@@ -19,14 +18,20 @@ import gov.va.api.health.r4.api.resources.Capability.Software;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@AllArgsConstructor
-public abstract class MetadataController {
+@RestController
+@RequestMapping(
+  value = {"/metadata"},
+  produces = {"application/json", "application/json+fhir", "application/fhir+json"}
+)
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
+public class MetadataController {
 
   private final CapabilityStatementProperties properties;
-
-  private final List<CapabilityResource> resources;
 
   private List<ContactDetail> contact() {
     return singletonList(
@@ -41,8 +46,14 @@ public abstract class MetadataController {
             .build());
   }
 
+  /**
+   * This is provided in case you'd like to return metadata from an endpoint not provided by
+   * default.
+   *
+   * @return Capability statement of how to use a FHIR server
+   */
   @GetMapping
-  protected Capability read() {
+  public Capability read() {
     return Capability.builder()
         .resourceType("Capability")
         .id(properties.getId())
@@ -64,7 +75,11 @@ public abstract class MetadataController {
 
   private List<Rest> rest() {
     return singletonList(
-        Rest.builder().mode(RestMode.server).security(restSecurity()).resource(resources).build());
+        Rest.builder()
+            .mode(RestMode.server)
+            .security(restSecurity())
+            .resource(properties.getResourcesToSupport())
+            .build());
   }
 
   private Security restSecurity() {

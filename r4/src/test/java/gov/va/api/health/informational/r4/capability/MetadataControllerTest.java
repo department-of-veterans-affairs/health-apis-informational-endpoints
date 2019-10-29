@@ -45,29 +45,14 @@ public class MetadataControllerTest {
                 .authorizeEndpoint("https://example.com/oauth2/authorization")
                 .description("http://docs.smarthealthit.org/")
                 .build())
+        .resourcesToSupport(resources())
         .build();
   }
 
   @Test
   @SneakyThrows
   public void read() {
-    CapabilityStatementProperties properties = properties();
-    List<Capability.CapabilityResource> resources =
-        Stream.of(
-                SupportedResource.builder()
-                    .type("Search By Patient Service")
-                    .searchBy(MetadataController.SearchParam.PATIENT)
-                    .profile("https://fhir.com/r4/test.html")
-                    .documentation(properties.getResourceDocumentation())
-                    .build(),
-                SupportedResource.builder()
-                    .type("Read Only Service")
-                    .profile("https://fhir.com/r4/test.html")
-                    .documentation(properties.getResourceDocumentation())
-                    .build())
-            .map(SupportedResource::asResource)
-            .collect(Collectors.toList());
-    TestController controller = new TestController(properties, resources);
+    MetadataController controller = new MetadataController(properties());
     Capability old =
         JacksonConfig.createMapper()
             .readValue(getClass().getResourceAsStream("/capability.json"), Capability.class);
@@ -79,11 +64,22 @@ public class MetadataControllerTest {
     }
   }
 
-  private class TestController extends MetadataController {
-
-    TestController(
-        CapabilityStatementProperties properties, List<Capability.CapabilityResource> resources) {
-      super(properties, resources);
-    }
+  private List<Capability.CapabilityResource> resources() {
+    return Stream.of(
+            SupportedResource.builder()
+                .type("Search By Patient Service")
+                .searchBy(MetadataController.SearchParam.PATIENT)
+                .profile("https://fhir.com/r4/test.html")
+                .documentation(
+                    "Implemented per specification. This is configurable. See http://hl7.org/fhir/R4/http.html")
+                .build(),
+            SupportedResource.builder()
+                .type("Read Only Service")
+                .profile("https://fhir.com/r4/test.html")
+                .documentation(
+                    "Implemented per specification. Also configurable. See http://hl7.org/fhir/R4/http.html")
+                .build())
+        .map(SupportedResource::asResource)
+        .collect(Collectors.toList());
   }
 }
