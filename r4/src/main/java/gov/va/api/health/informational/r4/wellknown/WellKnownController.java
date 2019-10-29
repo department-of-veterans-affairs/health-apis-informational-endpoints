@@ -18,8 +18,14 @@ public class WellKnownController {
   private final WellKnownProperties wellKnownProperties;
   private final CapabilityStatementProperties capabilityStatementProperties;
 
+  /**
+   * This is provided in case you'd like to return well-known from an endpoint not provided by *
+   * default.
+   *
+   * @return JSON file of basic security properties
+   */
   @GetMapping
-  protected WellKnown read() {
+  public WellKnown read() {
     return WellKnown.builder()
         .authorizationEndpoint(capabilityStatementProperties.getSecurity().getAuthorizeEndpoint())
         .tokenEndpoint(capabilityStatementProperties.getSecurity().getTokenEndpoint())
