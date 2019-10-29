@@ -1,4 +1,4 @@
-package gov.va.api.health.r4.informative.wellknown;
+package gov.va.api.health.informational.r4.wellknown;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

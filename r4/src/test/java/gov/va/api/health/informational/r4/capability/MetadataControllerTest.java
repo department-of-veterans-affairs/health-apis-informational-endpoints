@@ -1,13 +1,13 @@
-package gov.va.api.health.r4.informative.capability;
+package gov.va.api.health.informational.r4.capability;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
+import gov.va.api.health.informational.r4.capability.CapabilityStatementProperties.ContactProperties;
+import gov.va.api.health.informational.r4.capability.CapabilityStatementProperties.SecurityProperties;
 import gov.va.api.health.r4.api.resources.Capability;
 import gov.va.api.health.r4.api.resources.Capability.Kind;
 import gov.va.api.health.r4.api.resources.Capability.Status;
-import gov.va.api.health.r4.informative.capability.CapabilityStatementProperties.ContactProperties;
-import gov.va.api.health.r4.informative.capability.CapabilityStatementProperties.SecurityProperties;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

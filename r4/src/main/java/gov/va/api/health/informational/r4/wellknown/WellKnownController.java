@@ -1,7 +1,7 @@
-package gov.va.api.health.r4.informative.wellknown;
+package gov.va.api.health.informational.r4.wellknown;
 
+import gov.va.api.health.informational.r4.capability.CapabilityStatementProperties;
 import gov.va.api.health.r4.api.information.WellKnown;
-import gov.va.api.health.r4.informative.capability.CapabilityStatementProperties;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 

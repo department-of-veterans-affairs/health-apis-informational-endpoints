@@ -1,4 +1,4 @@
-package gov.va.api.health.r4.informative.capability;
+package gov.va.api.health.informational.r4.capability;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;

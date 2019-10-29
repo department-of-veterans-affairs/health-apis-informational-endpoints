@@ -1,11 +1,11 @@
-package gov.va.api.health.r4.informative.wellknown;
+package gov.va.api.health.informational.r4.wellknown;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
+import gov.va.api.health.informational.r4.capability.CapabilityStatementProperties;
 import gov.va.api.health.r4.api.information.WellKnown;
-import gov.va.api.health.r4.informative.capability.CapabilityStatementProperties;
 import lombok.SneakyThrows;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package gov.va.api.health.r4.informative.capability;
+package gov.va.api.health.informational.r4.capability;
 
 import gov.va.api.health.r4.api.resources.Capability.Kind;
 import gov.va.api.health.r4.api.resources.Capability.Status;
