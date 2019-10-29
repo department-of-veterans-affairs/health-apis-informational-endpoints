@@ -12,5 +12,5 @@
   </parent>
   <groupId>gov.va.api.health.informational</groupId>
   <artifactId>health-apis-informational-endpoints</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
 </project>
