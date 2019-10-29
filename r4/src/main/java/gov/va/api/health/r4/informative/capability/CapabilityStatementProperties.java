@@ -20,8 +20,6 @@ import org.springframework.context.annotation.Configuration;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-// TODO: I need to make sure I can use properties files from projects using this library
-// successfully
 public class CapabilityStatementProperties {
   private String id;
   private String version;

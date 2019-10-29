@@ -4,14 +4,7 @@ import gov.va.api.health.r4.api.information.WellKnown;
 import gov.va.api.health.r4.informative.capability.CapabilityStatementProperties;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping(
-  value = {".well-known/smart-configuration"},
-  produces = {"application/json", "application/fhir+json", "application/json+fhir"}
-)
 @AllArgsConstructor
 public abstract class WellKnownController {
   private final WellKnownProperties wellKnownProperties;
