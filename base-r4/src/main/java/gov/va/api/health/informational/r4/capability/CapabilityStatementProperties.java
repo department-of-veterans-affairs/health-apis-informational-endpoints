@@ -2,17 +2,13 @@ package gov.va.api.health.informational.r4.capability;
 
 import gov.va.api.health.r4.api.resources.Capability.Kind;
 import gov.va.api.health.r4.api.resources.Capability.Status;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-@SuppressWarnings("DefaultAnnotationParam")
 @Configuration
 @ConfigurationProperties("capability")
 @Data
-@Builder
 public class CapabilityStatementProperties {
 
   private String id;
@@ -42,8 +38,6 @@ public class CapabilityStatementProperties {
   private SecurityProperties security;
 
   @Data
-  @AllArgsConstructor
-  @Builder
   public static class ContactProperties {
 
     private String name;
@@ -52,8 +46,6 @@ public class CapabilityStatementProperties {
   }
 
   @Data
-  @AllArgsConstructor
-  @Builder
   public static class SecurityProperties {
 
     private String tokenEndpoint;

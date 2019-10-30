@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-  classes = {MetadataTestConfig.class, CapabilityStatementProperties.class},
+  classes = {MetadataControllerTest.TestConfiguration.class, MetadataTestConfig.class},
   initializers = ConfigFileApplicationContextInitializer.class
 )
 public class MetadataControllerTest {
