@@ -38,7 +38,6 @@ Using this is as simple as importing the OpenApiController. This looks for an `o
 
 OpenApiController will listen on the following endpoints by default:
 ```
-/
 /openapi.json 
 /api/openapi.json
 /openapi.yaml 

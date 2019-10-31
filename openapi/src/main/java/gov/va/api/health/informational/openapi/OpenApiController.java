@@ -40,7 +40,7 @@ public class OpenApiController {
    * serving the openapi.json directly is any different
    */
   @GetMapping(
-    value = {"/", "/openapi.json", "/api/openapi.json"},
+    value = {"/openapi.json", "/api/openapi.json"},
     produces = "application/json"
   )
   @ResponseBody
