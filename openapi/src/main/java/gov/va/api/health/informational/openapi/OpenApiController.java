@@ -1,5 +1,6 @@
 package gov.va.api.health.informational.openapi;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,8 +44,10 @@ public class OpenApiController {
     produces = "application/json"
   )
   @ResponseBody
-  public Object openapiJson() throws IOException {
-    return OpenApiController.MAPPER.readValue(openapiContent(), Object.class);
+  public String openapiJson() throws IOException {
+    Object obj = OpenApiController.MAPPER.readValue(openapiContent(), Object.class);
+    ObjectMapper jsonWriter = new ObjectMapper();
+    return jsonWriter.writeValueAsString(obj);
   }
 
   /** Provide access to the OpenAPI yaml via RESTful interface. */
