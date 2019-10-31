@@ -1,0 +1,98 @@
+{
+    "id" : "health-api-test-service",
+    "resourceType" : "Capability",
+    "version" : "2.0.0",
+    "name" : "API Management Platform | Health - Test Service",
+    "status" : "draft",
+    "date" : "2019-10-25T19:34:29Z",
+    "publisher" : "Department of Veterans Affairs",
+    "contact" : [
+        {
+            "name" : "Test Person",
+            "telecom" : [
+                {
+                    "system" : "email",
+                    "value" : "test.person@va.gov"
+                }
+            ]
+        }
+    ],
+    "description" : "Capability service meant for testing only.",
+    "kind" : "instance",
+    "software" : {
+        "name" : "test-service"
+    },
+    "fhirVersion" : "4.0.0",
+    "format" : [
+        "application/json+fhir",
+        "application/json",
+        "application/fhir+json"
+    ],
+    "rest" : [
+        {
+            "mode" : "server",
+            "security" : {
+                "extension" : [
+                    {
+                        "url" : "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris",
+                        "extension" : [
+                            {
+                                "url" : "token",
+                                "valueUri" : "https://example.com/oauth2/token"
+                            },
+                            {
+                                "url" : "authorize",
+                                "valueUri" : "https://example.com/oauth2/authorization"
+                            }
+                        ]
+                    }
+                ],
+                "cors" : "true",
+                "service" : [
+                    {
+                        "coding" : [
+                            {
+                                "system" : "https://www.hl7.org/fhir/valueset-restful-security-service.html",
+                                "code" : "SMART-on-FHIR",
+                                "display" : "SMART-on-FHIR"
+                            }
+                        ]
+                    }
+                ],
+                "description" : "http://docs.smarthealthit.org/"
+            },
+            "resource" : [
+                {
+                    "type" : "Search By Patient Service",
+                    "profile" : "https://fhir.com/r4/test.html",
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specification. This is configurable. See http://hl7.org/fhir/R4/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. This is configurable. See http://hl7.org/fhir/R4/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "patient",
+                            "type" : "reference"
+                        }
+                    ]
+                },
+                {
+                    "type" : "Read Only Service",
+                    "profile" : "https://fhir.com/r4/test.html",
+                    "interaction" : [
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. Also configurable. See http://hl7.org/fhir/R4/http.html"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
