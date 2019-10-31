@@ -1,7 +1,7 @@
 package gov.va.api.health.informational.r4.config;
 
-import gov.va.api.health.informational.r4.capability.CapabilityResourcesProperties;
 import gov.va.api.health.informational.r4.capability.CapabilityStatementProperties;
+import gov.va.api.health.informational.r4.capability.MetadataController;
 import gov.va.api.health.informational.r4.wellknown.WellKnownController;
 import gov.va.api.health.informational.r4.wellknown.WellKnownProperties;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +10,9 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({
   WellKnownController.class,
-  CapabilityResourcesProperties.class,
   CapabilityStatementProperties.class,
   WellKnownProperties.class,
-  WellKnownController.class
+  MetadataController.class
 })
 /**
  * This is a convenience class meant to import everything you'd need to support a capability
