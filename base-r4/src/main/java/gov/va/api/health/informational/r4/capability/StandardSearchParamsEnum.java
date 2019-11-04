@@ -5,14 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 
+/**
+ * Standard enum for our APIs which can be added to as warranted.
+ *
+ * <p>Note however, that this enumeration can be extended or overridden within an API by
+ * constructing an EnumWrapper initialized with desired implementation of SearchParamsEnumInterface.
+ */
 @Getter
 @AllArgsConstructor
 @Accessors(fluent = true)
-// TODO: How is this going to be updated, what other forms can this take for easier extensibility
-public enum SearchParams {
+public enum StandardSearchParamsEnum implements SearchParamsEnumInterface {
   PATIENT("patient", Capability.SearchParamType.reference);
-
   private final String param;
-
   private final Capability.SearchParamType type;
 }

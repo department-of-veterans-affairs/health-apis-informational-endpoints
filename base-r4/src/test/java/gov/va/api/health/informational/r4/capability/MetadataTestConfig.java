@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 
 @TestConfiguration
 public class MetadataTestConfig {
+
   @Bean
   public CapabilityResourcesProperties capabilityResourcesProperties() {
     return CapabilityResourcesProperties.builder()
@@ -14,7 +15,7 @@ public class MetadataTestConfig {
             Stream.of(
                     SupportedResource.builder()
                         .type("Search By Patient Service")
-                        .searchBy(SearchParams.PATIENT)
+                        .searchBy(StandardSearchParamsEnum.PATIENT)
                         .profile("https://fhir.com/r4/test.html")
                         .documentation(
                             "Implemented per specification. This is configurable. See http://hl7.org/fhir/R4/http.html")
