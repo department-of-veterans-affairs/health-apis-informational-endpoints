@@ -22,7 +22,7 @@ public class SupportedResource {
   String documentation;
 
   @Singular("searchBy")
-  Set<SearchParams> search;
+  Set<SearchParamsEnumInterface> search;
 
   /**
    * Convenience for building a lot of SupportedResources for a CapabilityStatement. Used in stream
