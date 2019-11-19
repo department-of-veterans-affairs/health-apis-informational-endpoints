@@ -8,6 +8,8 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>base-r4</artifactId>
   <properties>
+    <!-- Over-coverage of configuration classes would not be prudent due to rapidly gained diminished returns. -->
+    <jacoco.coverage>0.93</jacoco.coverage>
     <r4.version>2.0.14</r4.version>
     <service-auto-config.version>3.1.12</service-auto-config.version>
   </properties>

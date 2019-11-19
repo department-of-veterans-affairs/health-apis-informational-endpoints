@@ -22,16 +22,27 @@ public class WellKnownController {
    * This is provided in case you'd like to return well-known from an endpoint not provided by
    * default.
    *
+   * <p>NOTE: Some, but not all optional fields are supported but can be added as necessary. See:
+   * http://www.hl7.org/fhir/smart-app-launch/conformance/index.html#using-well-known
+   *
    * @return JSON file of basic security properties
    */
   @GetMapping
   public WellKnown read() {
-    return WellKnown.builder()
-        .authorizationEndpoint(capabilityStatementProperties.getSecurity().getAuthorizeEndpoint())
-        .tokenEndpoint(capabilityStatementProperties.getSecurity().getTokenEndpoint())
-        .capabilities(wellKnownProperties.getCapabilities())
-        .responseTypeSupported(wellKnownProperties.getResponseTypeSupported())
-        .scopesSupported(wellKnownProperties.getScopesSupported())
-        .build();
+    WellKnown.WellKnownBuilder wellKnownBuilder =
+        WellKnown.builder()
+            .authorizationEndpoint(
+                capabilityStatementProperties.getSecurity().getAuthorizeEndpoint())
+            .tokenEndpoint(capabilityStatementProperties.getSecurity().getTokenEndpoint())
+            .capabilities(wellKnownProperties.getCapabilities());
+    if ((wellKnownProperties.getResponseTypeSupported() != null)
+        && !wellKnownProperties.getResponseTypeSupported().isEmpty()) {
+      wellKnownBuilder.responseTypeSupported(wellKnownProperties.getResponseTypeSupported());
+    }
+    if ((wellKnownProperties.getScopesSupported() != null)
+        && !wellKnownProperties.getScopesSupported().isEmpty()) {
+      wellKnownBuilder.scopesSupported(wellKnownProperties.getScopesSupported());
+    }
+    return wellKnownBuilder.build();
   }
 }
