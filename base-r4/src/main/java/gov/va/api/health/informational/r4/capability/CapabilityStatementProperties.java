@@ -20,6 +20,7 @@ import org.springframework.util.Assert;
 @Slf4j
 public class CapabilityStatementProperties implements InitializingBean {
 
+  /** Required. */
   private String id;
 
   /** Optional. Business version. */
@@ -67,6 +68,7 @@ public class CapabilityStatementProperties implements InitializingBean {
   @Override
   public void afterPropertiesSet() throws IllegalArgumentException {
     // Required properties check.
+    Assert.notNull(id, "CapabilityStatementProperties id must not be null.");
     Assert.notNull(status, "CapabilityStatementProperties status must not be null.");
     Assert.hasText(
         publicationDate,

@@ -15,7 +15,8 @@ import gov.va.api.health.r4.api.resources.Capability.RestMode;
 import gov.va.api.health.r4.api.resources.Capability.Security;
 import gov.va.api.health.r4.api.resources.Capability.Software;
 import java.util.List;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +27,54 @@ import org.springframework.web.bind.annotation.RestController;
   value = {"/metadata"},
   produces = {"application/json", "application/json+fhir", "application/fhir+json"}
 )
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
-public class MetadataController {
+@RequiredArgsConstructor(onConstructor = @__({@Autowired}))
+public class MetadataController implements InitializingBean {
 
   private final CapabilityStatementProperties capabilityStatementProperties;
 
   private final CapabilityResourcesProperties resourcesProperties;
+
+  private Capability capability;
+
+  @Override
+  public void afterPropertiesSet() throws Exception {
+    Capability.CapabilityBuilder capabilityBuilder =
+        Capability.builder()
+            .resourceType("Capability")
+            .id(capabilityStatementProperties.getId())
+            .status(capabilityStatementProperties.getStatus())
+            .date(capabilityStatementProperties.getPublicationDate())
+            .kind(capabilityStatementProperties.getKind())
+            .fhirVersion(capabilityStatementProperties.getFhirVersion())
+            .software(software())
+            .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
+            .rest(rest());
+    // Version is optional.
+    if ((capabilityStatementProperties.getVersion() != null)
+        && !capabilityStatementProperties.getVersion().isBlank()) {
+      capabilityBuilder.version(capabilityStatementProperties.getVersion());
+    }
+    // Name is optional.
+    if ((capabilityStatementProperties.getName() != null)
+        && !capabilityStatementProperties.getName().isBlank()) {
+      capabilityBuilder.name(capabilityStatementProperties.getName());
+    }
+    // Publisher is optional.
+    if ((capabilityStatementProperties.getPublisher() != null)
+        && !capabilityStatementProperties.getPublisher().isBlank()) {
+      capabilityBuilder.publisher(capabilityStatementProperties.getPublisher());
+    }
+    // Contact is optional.
+    if (capabilityStatementProperties.getContact() != null) {
+      capabilityBuilder.contact(contact());
+    }
+    // Description is optional.
+    if ((capabilityStatementProperties.getDescription() != null)
+        && !capabilityStatementProperties.getDescription().isBlank()) {
+      capabilityBuilder.description(capabilityStatementProperties.getDescription());
+    }
+    capability = capabilityBuilder.build();
+  }
 
   /**
    * Software Contact(s).
@@ -42,10 +85,8 @@ public class MetadataController {
    * @return List of Contact Detail.
    */
   private List<ContactDetail> contact() {
-
     ContactDetail.ContactDetailBuilder contactDetailBuilder =
         ContactDetail.builder().name(capabilityStatementProperties.getContact().getName());
-
     if ((capabilityStatementProperties.getContact().getEmail() != null)
         && !capabilityStatementProperties.getContact().getEmail().isBlank()) {
       contactDetailBuilder.telecom(
@@ -55,7 +96,6 @@ public class MetadataController {
                   .value(capabilityStatementProperties.getContact().getEmail())
                   .build()));
     }
-
     return singletonList(contactDetailBuilder.build());
   }
 
@@ -70,50 +110,7 @@ public class MetadataController {
    */
   @GetMapping
   public Capability read() {
-
-    Capability.CapabilityBuilder capabilityBuilder =
-        Capability.builder()
-            .resourceType("Capability")
-            .id(capabilityStatementProperties.getId())
-            .status(capabilityStatementProperties.getStatus())
-            .date(capabilityStatementProperties.getPublicationDate())
-            .kind(capabilityStatementProperties.getKind())
-            .fhirVersion(capabilityStatementProperties.getFhirVersion())
-            .software(software())
-            // This can also be a property if we ever need to make it configurable
-            .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
-            .rest(rest());
-
-    // Version is optional.
-    if ((capabilityStatementProperties.getVersion() != null)
-        && !capabilityStatementProperties.getVersion().isBlank()) {
-      capabilityBuilder.version(capabilityStatementProperties.getVersion());
-    }
-
-    // Name is optional.
-    if ((capabilityStatementProperties.getName() != null)
-        && !capabilityStatementProperties.getName().isBlank()) {
-      capabilityBuilder.name(capabilityStatementProperties.getName());
-    }
-
-    // Publisher is optional.
-    if ((capabilityStatementProperties.getPublisher() != null)
-        && !capabilityStatementProperties.getPublisher().isBlank()) {
-      capabilityBuilder.publisher(capabilityStatementProperties.getPublisher());
-    }
-
-    // Contact is optional.
-    if (capabilityStatementProperties.getContact() != null) {
-      capabilityBuilder.contact(contact());
-    }
-
-    // Description is optional.
-    if ((capabilityStatementProperties.getDescription() != null)
-        && !capabilityStatementProperties.getDescription().isBlank()) {
-      capabilityBuilder.description(capabilityStatementProperties.getDescription());
-    }
-
-    return capabilityBuilder.build();
+    return capability;
   }
 
   /**
