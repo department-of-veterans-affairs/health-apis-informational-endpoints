@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.r4.api.resources.Capability;
 import java.io.IOException;
+import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,11 @@ public class MetadataControllerTest {
   @Autowired CapabilityResourcesProperties capabilityResourcesProperties;
 
   @Test
+  @SneakyThrows
   public void read() {
     MetadataController controller =
         new MetadataController(capabilityStatementProperties, capabilityResourcesProperties);
+    controller.afterPropertiesSet();
     Capability old = null;
     try {
       old =
