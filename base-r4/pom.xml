@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>base-r4</artifactId>
   <properties>
-    <r4.version>2.0.18</r4.version>
+    <r4.version>2.0.22-SNAPSHOT</r4.version>
     <service-auto-config.version>3.1.12</service-auto-config.version>
   </properties>
   <dependencies>

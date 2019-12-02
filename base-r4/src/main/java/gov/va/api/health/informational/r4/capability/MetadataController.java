@@ -13,7 +13,8 @@ import gov.va.api.health.r4.api.resources.Capability;
 import gov.va.api.health.r4.api.resources.Capability.Rest;
 import gov.va.api.health.r4.api.resources.Capability.RestMode;
 import gov.va.api.health.r4.api.resources.Capability.Security;
-import gov.va.api.health.r4.api.resources.Capability.Software;
+import gov.va.api.health.r4.api.resources.Resource;
+import gov.va.api.health.r4.api.resources.TerminologyCapabilities;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -42,38 +43,60 @@ public class MetadataController implements InitializingBean {
 
   private Capability normative;
 
-  private Capability terminology;
+  private TerminologyCapabilities terminology;
 
   @Override
   public void afterPropertiesSet() throws Exception {
     // Full Capability Statement.
-    Capability.CapabilityBuilder capabilityBuilder =
+    capability =
         initializeCapabilityBuilder(MetadataCapabilityStatementModeEnum.FULL.getResourceType());
-    capabilityBuilder
-        .fhirVersion(capabilityStatementProperties.getFhirVersion())
-        .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
-        .rest(rest());
-    capability = capabilityBuilder.build();
     // Normative Statement is the same as a full Capability Statement with trial-use portions
     // removed.
-    Capability.CapabilityBuilder normativeBuilder =
+    normative =
         initializeCapabilityBuilder(
             MetadataCapabilityStatementModeEnum.NORMATIVE.getResourceType());
-    normativeBuilder
-        .fhirVersion(capabilityStatementProperties.getFhirVersion())
-        .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
-        .rest(rest());
-    normative = normativeBuilder.build();
-    // Remove any trial use stuff for normative statement.
-    // Remove the security for each rest entry.
-    for (Rest r : normative.rest()) {
-      r.security(null);
+    normative.useContext(null);
+    normative.imports(null);
+    if (normative.implementation() != null) {
+      normative.implementation().custodian(null);
     }
+    if (normative.rest() != null) {
+      for (Rest rest : normative.rest()) {
+        rest.security(null);
+        if (rest.resource() != null) {
+          for (Capability.CapabilityResource r : rest.resource()) {
+            r.supportedProfile(null);
+            r.versioning(null);
+            r.readHistory(null);
+            r.updateCreate(null);
+            r.conditionalCreate(null);
+            r.conditionalRead(null);
+            r.conditionalUpdate(null);
+            r.conditionalDelete(null);
+            r.referencePolicy(null);
+            r.searchInclude(null);
+            r.searchRevInclude(null);
+          }
+        }
+      }
+    }
+    normative.messaging(null);
+    normative.document(null);
     // Terminology Statement.
     terminology =
-        initializeCapabilityBuilder(
-                MetadataCapabilityStatementModeEnum.TERMINOLOGY.getResourceType())
-            .build();
+        initializeTerminologyCapabilitiesBuilder(
+            MetadataCapabilityStatementModeEnum.TERMINOLOGY.getResourceType());
+  }
+
+  /**
+   * Capability Software description.
+   *
+   * @return Capability Software.
+   */
+  private Capability.Software capabilitySoftware() {
+    return Capability.Software.builder()
+        .name(capabilityStatementProperties.getSoftwareName())
+        .build();
   }
 
   /**
@@ -100,13 +123,12 @@ public class MetadataController implements InitializingBean {
   }
 
   /**
-   * Initialize a CapabilityBuilder with content that is the same for full, normative, and
-   * terminology modes.
+   * Initialize a Capability (Statement) with content that is the same for full and normative modes.
    *
    * @param resourceType The resource type string to populate within the statement.
-   * @return CapabilityBuilder.
+   * @return Capability (Statement).
    */
-  private Capability.CapabilityBuilder initializeCapabilityBuilder(final String resourceType) {
+  private Capability initializeCapabilityBuilder(final String resourceType) {
     Capability.CapabilityBuilder capabilityBuilder =
         Capability.builder()
             .resourceType(resourceType)
@@ -114,7 +136,10 @@ public class MetadataController implements InitializingBean {
             .status(capabilityStatementProperties.getStatus())
             .date(capabilityStatementProperties.getPublicationDate())
             .kind(capabilityStatementProperties.getKind())
-            .software(software());
+            .software(capabilitySoftware())
+            .fhirVersion(capabilityStatementProperties.getFhirVersion())
+            .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
+            .rest(rest());
     // Version is optional.
     if ((capabilityStatementProperties.getVersion() != null)
         && !capabilityStatementProperties.getVersion().isBlank()) {
@@ -139,7 +164,50 @@ public class MetadataController implements InitializingBean {
         && !capabilityStatementProperties.getDescription().isBlank()) {
       capabilityBuilder.description(capabilityStatementProperties.getDescription());
     }
-    return capabilityBuilder;
+    return capabilityBuilder.build();
+  }
+
+  /**
+   * Initialize a TerminologyCapabilities with content for terminology mode.
+   *
+   * @param resourceType The resource type string to populate within the statement.
+   * @return TerminologyCapabilities.
+   */
+  private TerminologyCapabilities initializeTerminologyCapabilitiesBuilder(
+      final String resourceType) {
+    TerminologyCapabilities.TerminologyCapabilitiesBuilder terminologyCapabilitiesBuilder =
+        TerminologyCapabilities.builder()
+            .resourceType(resourceType)
+            .id(capabilityStatementProperties.getId())
+            .status(capabilityStatementProperties.getStatus())
+            .date(capabilityStatementProperties.getPublicationDate())
+            .kind(capabilityStatementProperties.getKind())
+            .software(terminologyCapabilitiesSoftware());
+    // Version is optional.
+    if ((capabilityStatementProperties.getVersion() != null)
+        && !capabilityStatementProperties.getVersion().isBlank()) {
+      terminologyCapabilitiesBuilder.version(capabilityStatementProperties.getVersion());
+    }
+    // Name is optional.
+    if ((capabilityStatementProperties.getName() != null)
+        && !capabilityStatementProperties.getName().isBlank()) {
+      terminologyCapabilitiesBuilder.name(capabilityStatementProperties.getName());
+    }
+    // Publisher is optional.
+    if ((capabilityStatementProperties.getPublisher() != null)
+        && !capabilityStatementProperties.getPublisher().isBlank()) {
+      terminologyCapabilitiesBuilder.publisher(capabilityStatementProperties.getPublisher());
+    }
+    // Contact is optional.
+    if (capabilityStatementProperties.getContact() != null) {
+      terminologyCapabilitiesBuilder.contact(contact());
+    }
+    // Description is optional.
+    if ((capabilityStatementProperties.getDescription() != null)
+        && !capabilityStatementProperties.getDescription().isBlank()) {
+      terminologyCapabilitiesBuilder.description(capabilityStatementProperties.getDescription());
+    }
+    return terminologyCapabilitiesBuilder.build();
   }
 
   /**
@@ -153,7 +221,7 @@ public class MetadataController implements InitializingBean {
    * @return Capability statement of how to use a FHIR server.
    */
   @GetMapping
-  public Capability read(@RequestParam("mode") Optional<String> mode) {
+  public Resource read(@RequestParam("mode") Optional<String> mode) {
     // If not specified or unrecognized mode just return regular capability statement.
     MetadataCapabilityStatementModeEnum modeEnum = MetadataCapabilityStatementModeEnum.FULL;
     if (mode.isPresent()) {
@@ -238,11 +306,13 @@ public class MetadataController implements InitializingBean {
   }
 
   /**
-   * Software description.
+   * Terminology Capabilities Software description.
    *
-   * @return Software.
+   * @return Terminology Capabilities Software.
    */
-  private Software software() {
-    return Software.builder().name(capabilityStatementProperties.getSoftwareName()).build();
+  private TerminologyCapabilities.Software terminologyCapabilitiesSoftware() {
+    return TerminologyCapabilities.Software.builder()
+        .name(capabilityStatementProperties.getSoftwareName())
+        .build();
   }
 }
