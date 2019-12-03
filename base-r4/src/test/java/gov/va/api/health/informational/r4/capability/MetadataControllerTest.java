@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.r4.api.resources.Capability;
 import java.io.IOException;
+import java.util.Optional;
 import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +43,17 @@ public class MetadataControllerTest {
       e.printStackTrace();
     }
     try {
-      assertThat(prettyJson(controller.read())).isEqualTo(prettyJson(old));
+      assertThat(prettyJson(controller.read(Optional.empty()))).isEqualTo(prettyJson(old));
+    } catch (AssertionError e) {
+      System.out.println(e.getMessage());
+      throw e;
+    }
+    try {
+      assertThat(
+              prettyJson(
+                  controller.read(
+                      Optional.of(MetadataCapabilityStatementModeEnum.FULL.getParameter()))))
+          .isEqualTo(prettyJson(old));
     } catch (AssertionError e) {
       System.out.println(e.getMessage());
       throw e;

@@ -13,13 +13,17 @@ import gov.va.api.health.r4.api.resources.Capability;
 import gov.va.api.health.r4.api.resources.Capability.Rest;
 import gov.va.api.health.r4.api.resources.Capability.RestMode;
 import gov.va.api.health.r4.api.resources.Capability.Security;
-import gov.va.api.health.r4.api.resources.Capability.Software;
+import gov.va.api.health.r4.api.resources.Resource;
+import gov.va.api.health.r4.api.resources.TerminologyCapabilities;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
   produces = {"application/json", "application/json+fhir", "application/fhir+json"}
 )
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
+@Slf4j
 public class MetadataController implements InitializingBean {
 
   private final CapabilityStatementProperties capabilityStatementProperties;
@@ -36,44 +41,62 @@ public class MetadataController implements InitializingBean {
 
   private Capability capability;
 
+  private Capability normative;
+
+  private TerminologyCapabilities terminology;
+
   @Override
   public void afterPropertiesSet() throws Exception {
-    Capability.CapabilityBuilder capabilityBuilder =
-        Capability.builder()
-            .resourceType("Capability")
-            .id(capabilityStatementProperties.getId())
-            .status(capabilityStatementProperties.getStatus())
-            .date(capabilityStatementProperties.getPublicationDate())
-            .kind(capabilityStatementProperties.getKind())
-            .fhirVersion(capabilityStatementProperties.getFhirVersion())
-            .software(software())
-            .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
-            .rest(rest());
-    // Version is optional.
-    if ((capabilityStatementProperties.getVersion() != null)
-        && !capabilityStatementProperties.getVersion().isBlank()) {
-      capabilityBuilder.version(capabilityStatementProperties.getVersion());
+    // Full Capability Statement.
+    capability =
+        initializeCapabilityBuilder(MetadataCapabilityStatementModeEnum.FULL.getResourceType());
+    // Normative Statement is the same as a full Capability Statement with trial-use portions
+    // removed.
+    normative =
+        initializeCapabilityBuilder(
+            MetadataCapabilityStatementModeEnum.NORMATIVE.getResourceType());
+    normative.useContext(null);
+    normative.imports(null);
+    if (normative.implementation() != null) {
+      normative.implementation().custodian(null);
     }
-    // Name is optional.
-    if ((capabilityStatementProperties.getName() != null)
-        && !capabilityStatementProperties.getName().isBlank()) {
-      capabilityBuilder.name(capabilityStatementProperties.getName());
+    if (normative.rest() != null) {
+      for (Rest rest : normative.rest()) {
+        rest.security(null);
+        if (rest.resource() != null) {
+          for (Capability.CapabilityResource r : rest.resource()) {
+            r.supportedProfile(null);
+            r.versioning(null);
+            r.readHistory(null);
+            r.updateCreate(null);
+            r.conditionalCreate(null);
+            r.conditionalRead(null);
+            r.conditionalUpdate(null);
+            r.conditionalDelete(null);
+            r.referencePolicy(null);
+            r.searchInclude(null);
+            r.searchRevInclude(null);
+          }
+        }
+      }
     }
-    // Publisher is optional.
-    if ((capabilityStatementProperties.getPublisher() != null)
-        && !capabilityStatementProperties.getPublisher().isBlank()) {
-      capabilityBuilder.publisher(capabilityStatementProperties.getPublisher());
-    }
-    // Contact is optional.
-    if (capabilityStatementProperties.getContact() != null) {
-      capabilityBuilder.contact(contact());
-    }
-    // Description is optional.
-    if ((capabilityStatementProperties.getDescription() != null)
-        && !capabilityStatementProperties.getDescription().isBlank()) {
-      capabilityBuilder.description(capabilityStatementProperties.getDescription());
-    }
-    capability = capabilityBuilder.build();
+    normative.messaging(null);
+    normative.document(null);
+    // Terminology Statement.
+    terminology =
+        initializeTerminologyCapabilitiesBuilder(
+            MetadataCapabilityStatementModeEnum.TERMINOLOGY.getResourceType());
+  }
+
+  /**
+   * Capability Software description.
+   *
+   * @return Capability Software.
+   */
+  private Capability.Software capabilitySoftware() {
+    return Capability.Software.builder()
+        .name(capabilityStatementProperties.getSoftwareName())
+        .build();
   }
 
   /**
@@ -100,22 +123,126 @@ public class MetadataController implements InitializingBean {
   }
 
   /**
+   * Initialize a Capability (Statement) with content that is the same for full and normative modes.
+   *
+   * @param resourceType The resource type string to populate within the statement.
+   * @return Capability (Statement).
+   */
+  private Capability initializeCapabilityBuilder(final String resourceType) {
+    Capability.CapabilityBuilder capabilityBuilder =
+        Capability.builder()
+            .resourceType(resourceType)
+            .id(capabilityStatementProperties.getId())
+            .status(capabilityStatementProperties.getStatus())
+            .date(capabilityStatementProperties.getPublicationDate())
+            .kind(capabilityStatementProperties.getKind())
+            .software(capabilitySoftware())
+            .fhirVersion(capabilityStatementProperties.getFhirVersion())
+            .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
+            .rest(rest());
+    // Version is optional.
+    if ((capabilityStatementProperties.getVersion() != null)
+        && !capabilityStatementProperties.getVersion().isBlank()) {
+      capabilityBuilder.version(capabilityStatementProperties.getVersion());
+    }
+    // Name is optional.
+    if ((capabilityStatementProperties.getName() != null)
+        && !capabilityStatementProperties.getName().isBlank()) {
+      capabilityBuilder.name(capabilityStatementProperties.getName());
+    }
+    // Publisher is optional.
+    if ((capabilityStatementProperties.getPublisher() != null)
+        && !capabilityStatementProperties.getPublisher().isBlank()) {
+      capabilityBuilder.publisher(capabilityStatementProperties.getPublisher());
+    }
+    // Contact is optional.
+    if (capabilityStatementProperties.getContact() != null) {
+      capabilityBuilder.contact(contact());
+    }
+    // Description is optional.
+    if ((capabilityStatementProperties.getDescription() != null)
+        && !capabilityStatementProperties.getDescription().isBlank()) {
+      capabilityBuilder.description(capabilityStatementProperties.getDescription());
+    }
+    return capabilityBuilder.build();
+  }
+
+  /**
+   * Initialize a TerminologyCapabilities with content for terminology mode.
+   *
+   * @param resourceType The resource type string to populate within the statement.
+   * @return TerminologyCapabilities.
+   */
+  private TerminologyCapabilities initializeTerminologyCapabilitiesBuilder(
+      final String resourceType) {
+    TerminologyCapabilities.TerminologyCapabilitiesBuilder terminologyCapabilitiesBuilder =
+        TerminologyCapabilities.builder()
+            .resourceType(resourceType)
+            .id(capabilityStatementProperties.getId())
+            .status(capabilityStatementProperties.getStatus())
+            .date(capabilityStatementProperties.getPublicationDate())
+            .kind(capabilityStatementProperties.getKind())
+            .software(terminologyCapabilitiesSoftware());
+    // Version is optional.
+    if ((capabilityStatementProperties.getVersion() != null)
+        && !capabilityStatementProperties.getVersion().isBlank()) {
+      terminologyCapabilitiesBuilder.version(capabilityStatementProperties.getVersion());
+    }
+    // Name is optional.
+    if ((capabilityStatementProperties.getName() != null)
+        && !capabilityStatementProperties.getName().isBlank()) {
+      terminologyCapabilitiesBuilder.name(capabilityStatementProperties.getName());
+    }
+    // Publisher is optional.
+    if ((capabilityStatementProperties.getPublisher() != null)
+        && !capabilityStatementProperties.getPublisher().isBlank()) {
+      terminologyCapabilitiesBuilder.publisher(capabilityStatementProperties.getPublisher());
+    }
+    // Contact is optional.
+    if (capabilityStatementProperties.getContact() != null) {
+      terminologyCapabilitiesBuilder.contact(contact());
+    }
+    // Description is optional.
+    if ((capabilityStatementProperties.getDescription() != null)
+        && !capabilityStatementProperties.getDescription().isBlank()) {
+      terminologyCapabilitiesBuilder.description(capabilityStatementProperties.getDescription());
+    }
+    return terminologyCapabilitiesBuilder.build();
+  }
+
+  /**
    * This is provided in case you'd like to return metadata from an endpoint not provided by
    * default.
    *
    * <p>NOTE: Some, but not all optional fields are supported but can be added as necessary. See:
    * http://hl7.org/fhir/r4/capabilitystatement.html
    *
+   * @param mode Optional mode parameter to specify response resource type.
    * @return Capability statement of how to use a FHIR server.
    */
   @GetMapping
-  public Capability read() {
-    return capability;
+  public Resource read(@RequestParam("mode") Optional<String> mode) {
+    // If not specified or unrecognized mode just return regular capability statement.
+    MetadataCapabilityStatementModeEnum modeEnum = MetadataCapabilityStatementModeEnum.FULL;
+    if (mode.isPresent()) {
+      modeEnum = MetadataCapabilityStatementModeEnum.fromParameter(mode.get());
+    }
+    switch (modeEnum) {
+      case FULL:
+        return capability;
+      case NORMATIVE:
+        return normative;
+      case TERMINOLOGY:
+        return terminology;
+      default:
+        return capability;
+    }
   }
 
   /**
    * Technically FHIR optional but implemented as required. Description of RESTful endpoints. TODO:
-   * Consider making more configurable and supporting multiple endpoints.
+   * Consider making more configurable and making more configurable and supporting multiple
+   * endpoints.
    *
    * @return List of Rest endpoints.
    */
@@ -179,11 +306,13 @@ public class MetadataController implements InitializingBean {
   }
 
   /**
-   * Software description.
+   * Terminology Capabilities Software description.
    *
-   * @return Software.
+   * @return Terminology Capabilities Software.
    */
-  private Software software() {
-    return Software.builder().name(capabilityStatementProperties.getSoftwareName()).build();
+  private TerminologyCapabilities.Software terminologyCapabilitiesSoftware() {
+    return TerminologyCapabilities.Software.builder()
+        .name(capabilityStatementProperties.getSoftwareName())
+        .build();
   }
 }
