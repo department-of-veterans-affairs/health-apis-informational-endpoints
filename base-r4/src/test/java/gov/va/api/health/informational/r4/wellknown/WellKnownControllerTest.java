@@ -7,6 +7,7 @@ import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.informational.r4.capability.CapabilityStatementProperties;
 import gov.va.api.health.r4.api.information.WellKnown;
 import java.io.IOException;
+import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,11 @@ public class WellKnownControllerTest {
    * interpret and type of controller
    */
   @Test
+  @SneakyThrows
   public void read() {
     WellKnownController controller =
         new WellKnownController(wellKnownProperties, capabilityStatementProperties);
+    controller.afterPropertiesSet();
     WellKnown old = null;
     try {
       old =
