@@ -10,6 +10,7 @@
   <properties>
     <stu3.version>2.0.22</stu3.version>
     <service-auto-config.version>3.1.12</service-auto-config.version>
+    <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
   </properties>
   <dependencies>
     <dependency>
@@ -44,4 +45,62 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <!-- Generate stu3 well-known. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-swf-files</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target name="copy java">
+                <!-- Generate stu3 wellknown. -->
+                <copy todir="${generated-sources-base}/base-stu3" flatten="true" includeEmptyDirs="false">
+                  <fileset dir="${basedir}/../base-r4/src/main" includes="**/wellknown/"/>
+                </copy>
+                <replace dir="${generated-sources-base}/base-stu3" value="stu3">
+                  <include name="*.java"/>
+                  <replacetoken>r4</replacetoken>
+                </replace>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Compile generated sources. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${generated-sources-base}</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Ignore generated source. -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/wellknown/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
