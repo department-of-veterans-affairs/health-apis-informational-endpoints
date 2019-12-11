@@ -156,7 +156,7 @@
                         "extension" : null,
                         "coding" : [
                             {
-                                "system" : "https://www.hl7.org/fhir/restful-security-service",
+                                "system" : "http://hl7.org/fhir/restful-security-service",
                                 "version" : null,
                                 "code" : "SMART-on-FHIR",
                                 "display" : "SMART-on-FHIR",
