@@ -2,7 +2,8 @@ package gov.va.api.health.informational.r4.wellknown;
 
 import gov.va.api.health.informational.r4.capability.CapabilityStatementProperties;
 import gov.va.api.health.r4.api.information.WellKnown;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +14,21 @@ import org.springframework.web.bind.annotation.RestController;
   value = {".well-known/smart-configuration"},
   produces = {"application/json", "application/fhir+json", "application/json+fhir"}
 )
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
-public class WellKnownController {
+@RequiredArgsConstructor(onConstructor = @__({@Autowired}))
+public class WellKnownController implements InitializingBean {
+
   private final WellKnownProperties wellKnownProperties;
+
   private final CapabilityStatementProperties capabilityStatementProperties;
+
+  private WellKnown wellKnown;
+
+  @Override
+  public void afterPropertiesSet() throws Exception {
+    wellKnown =
+        WellKnownUtilities.initializeWellKnownBuilder(
+            capabilityStatementProperties, wellKnownProperties);
+  }
 
   /**
    * This is provided in case you'd like to return well-known from an endpoint not provided by
@@ -29,20 +41,6 @@ public class WellKnownController {
    */
   @GetMapping
   public WellKnown read() {
-    WellKnown.WellKnownBuilder wellKnownBuilder =
-        WellKnown.builder()
-            .authorizationEndpoint(
-                capabilityStatementProperties.getSecurity().getAuthorizeEndpoint())
-            .tokenEndpoint(capabilityStatementProperties.getSecurity().getTokenEndpoint())
-            .capabilities(wellKnownProperties.getCapabilities());
-    if ((wellKnownProperties.getResponseTypeSupported() != null)
-        && !wellKnownProperties.getResponseTypeSupported().isEmpty()) {
-      wellKnownBuilder.responseTypeSupported(wellKnownProperties.getResponseTypeSupported());
-    }
-    if ((wellKnownProperties.getScopesSupported() != null)
-        && !wellKnownProperties.getScopesSupported().isEmpty()) {
-      wellKnownBuilder.scopesSupported(wellKnownProperties.getScopesSupported());
-    }
-    return wellKnownBuilder.build();
+    return wellKnown;
   }
 }
