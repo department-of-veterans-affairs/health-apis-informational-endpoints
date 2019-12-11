@@ -167,7 +167,7 @@ public final class ConformanceUtilities {
         .coding(
             singletonList(
                 Coding.builder()
-                    .system("https://www.hl7.org/fhir/restful-security-service")
+                    .system("http://hl7.org/fhir/restful-security-service")
                     .code("SMART-on-FHIR")
                     .display("SMART-on-FHIR")
                     .build()))
