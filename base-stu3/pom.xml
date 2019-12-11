@@ -3,12 +3,12 @@
   <parent>
     <artifactId>health-apis-informational-endpoints</artifactId>
     <groupId>gov.va.api.health.informational</groupId>
-    <version>1.0.6-SNAPSHOT</version>
+    <version>1.0.6</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>base-stu3</artifactId>
   <properties>
-    <stu3.version>2.0.22</stu3.version>
+    <stu3.version>2.0.24</stu3.version>
     <service-auto-config.version>3.1.12</service-auto-config.version>
     <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
   </properties>
