@@ -19,10 +19,10 @@ public final class ConformanceUtilities {
    *
    * @return Conformance Software.
    */
-  private static Conformance.Software capabilitySoftware(
-      ConformanceStatementProperties capabilityStatementProperties) {
+  private static Conformance.Software conformanceSoftware(
+      ConformanceStatementProperties conformanceStatementProperties) {
     return Conformance.Software.builder()
-        .name(capabilityStatementProperties.getSoftwareName())
+        .name(conformanceStatementProperties.getSoftwareName())
         .build();
   }
 
@@ -32,19 +32,20 @@ public final class ConformanceUtilities {
    * <p>TODO: Currently implemented to support only one contact. Consider making more configurable
    * and supporting multiple contacts.
    *
+   * @param conformanceStatementProperties Configured conformance properties.
    * @return List of Contact Detail.
    */
   private static List<Conformance.Contact> contact(
-      ConformanceStatementProperties capabilityStatementProperties) {
+      ConformanceStatementProperties conformanceStatementProperties) {
     Conformance.Contact.ContactBuilder contactDetailBuilder =
-        Conformance.Contact.builder().name(capabilityStatementProperties.getContact().getName());
-    if ((capabilityStatementProperties.getContact().getEmail() != null)
-        && !capabilityStatementProperties.getContact().getEmail().isBlank()) {
+        Conformance.Contact.builder().name(conformanceStatementProperties.getContact().getName());
+    if ((conformanceStatementProperties.getContact().getEmail() != null)
+        && !conformanceStatementProperties.getContact().getEmail().isBlank()) {
       contactDetailBuilder.telecom(
           singletonList(
               ContactPoint.builder()
                   .system(ContactPoint.ContactPointSystem.email)
-                  .value(capabilityStatementProperties.getContact().getEmail())
+                  .value(conformanceStatementProperties.getContact().getEmail())
                   .build()));
     }
     return singletonList(contactDetailBuilder.build());
@@ -55,50 +56,50 @@ public final class ConformanceUtilities {
    * modes.
    *
    * @param resourceType The resource type string to populate within the statement.
-   * @param capabilityStatementProperties Configured capability properties.
+   * @param conformanceStatementProperties Configured conformance properties.
    * @param resourcesProperties Configured resources properties.
    * @return Conformance (Statement).
    */
   public static Conformance initializeConformanceBuilder(
       final String resourceType,
-      ConformanceStatementProperties capabilityStatementProperties,
+      ConformanceStatementProperties conformanceStatementProperties,
       ConformanceResourcesProperties resourcesProperties) {
-    Conformance.ConformanceBuilder capabilityBuilder =
+    Conformance.ConformanceBuilder conformanceBuilder =
         Conformance.builder()
             .resourceType(resourceType)
-            .id(capabilityStatementProperties.getId())
-            .date(capabilityStatementProperties.getPublicationDate())
+            .id(conformanceStatementProperties.getId())
+            .date(conformanceStatementProperties.getPublicationDate())
             .kind(Conformance.Kind.capability)
-            .software(capabilitySoftware(capabilityStatementProperties))
-            .fhirVersion(capabilityStatementProperties.getFhirVersion())
+            .software(conformanceSoftware(conformanceStatementProperties))
+            .fhirVersion(conformanceStatementProperties.getFhirVersion())
             .acceptUnknown(Conformance.AcceptUnknown.no)
             .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
-            .rest(rest(capabilityStatementProperties, resourcesProperties));
+            .rest(rest(conformanceStatementProperties, resourcesProperties));
     // Version is optional.
-    if ((capabilityStatementProperties.getVersion() != null)
-        && !capabilityStatementProperties.getVersion().isBlank()) {
-      capabilityBuilder.version(capabilityStatementProperties.getVersion());
+    if ((conformanceStatementProperties.getVersion() != null)
+        && !conformanceStatementProperties.getVersion().isBlank()) {
+      conformanceBuilder.version(conformanceStatementProperties.getVersion());
     }
     // Name is optional.
-    if ((capabilityStatementProperties.getName() != null)
-        && !capabilityStatementProperties.getName().isBlank()) {
-      capabilityBuilder.name(capabilityStatementProperties.getName());
+    if ((conformanceStatementProperties.getName() != null)
+        && !conformanceStatementProperties.getName().isBlank()) {
+      conformanceBuilder.name(conformanceStatementProperties.getName());
     }
     // Publisher is optional.
-    if ((capabilityStatementProperties.getPublisher() != null)
-        && !capabilityStatementProperties.getPublisher().isBlank()) {
-      capabilityBuilder.publisher(capabilityStatementProperties.getPublisher());
+    if ((conformanceStatementProperties.getPublisher() != null)
+        && !conformanceStatementProperties.getPublisher().isBlank()) {
+      conformanceBuilder.publisher(conformanceStatementProperties.getPublisher());
     }
     // Contact is optional.
-    if (capabilityStatementProperties.getContact() != null) {
-      capabilityBuilder.contact(contact(capabilityStatementProperties));
+    if (conformanceStatementProperties.getContact() != null) {
+      conformanceBuilder.contact(contact(conformanceStatementProperties));
     }
     // Description is optional.
-    if ((capabilityStatementProperties.getDescription() != null)
-        && !capabilityStatementProperties.getDescription().isBlank()) {
-      capabilityBuilder.description(capabilityStatementProperties.getDescription());
+    if ((conformanceStatementProperties.getDescription() != null)
+        && !conformanceStatementProperties.getDescription().isBlank()) {
+      conformanceBuilder.description(conformanceStatementProperties.getDescription());
     }
-    return capabilityBuilder.build();
+    return conformanceBuilder.build();
   }
 
   /**
@@ -106,15 +107,17 @@ public final class ConformanceUtilities {
    * Consider making more configurable and making more configurable and supporting multiple
    * endpoints.
    *
+   * @param conformanceStatementProperties Configured conformance properties.
+   * @param resourcesProperties Configured resources properties.
    * @return List of Rest endpoints.
    */
   private static List<Conformance.Rest> rest(
-      ConformanceStatementProperties capabilityStatementProperties,
+      ConformanceStatementProperties conformanceStatementProperties,
       ConformanceResourcesProperties resourcesProperties) {
     return singletonList(
         Conformance.Rest.builder()
             .mode(Conformance.RestMode.server)
-            .security(restSecurity(capabilityStatementProperties))
+            .security(restSecurity(conformanceStatementProperties))
             .resource(resourcesProperties.getResourcesToSupport())
             .build());
   }
@@ -123,10 +126,11 @@ public final class ConformanceUtilities {
    * Security description for RESTful endpoint. Technically optional but implemented as if required
    * for endpoint. TODO: Consider making more configurable.
    *
+   * @param conformanceStatementProperties Configured conformance properties.
    * @return Security description.
    */
   private static Conformance.RestSecurity restSecurity(
-      ConformanceStatementProperties capabilityStatementProperties) {
+      ConformanceStatementProperties conformanceStatementProperties) {
     return Conformance.RestSecurity.builder()
         .extension(
             singletonList(
@@ -137,19 +141,19 @@ public final class ConformanceUtilities {
                             Extension.builder()
                                 .url("token")
                                 .valueUri(
-                                    capabilityStatementProperties.getSecurity().getTokenEndpoint())
+                                    conformanceStatementProperties.getSecurity().getTokenEndpoint())
                                 .build(),
                             Extension.builder()
                                 .url("authorize")
                                 .valueUri(
-                                    capabilityStatementProperties
+                                    conformanceStatementProperties
                                         .getSecurity()
                                         .getAuthorizeEndpoint())
                                 .build()))
                     .build()))
         .cors(true)
         .service(singletonList(smartOnFhirCodeableConcept()))
-        .description(capabilityStatementProperties.getSecurity().getDescription())
+        .description(conformanceStatementProperties.getSecurity().getDescription())
         .build();
   }
 

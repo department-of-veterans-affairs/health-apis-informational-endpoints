@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 
 /**
- * Configuration for Metadata (Capability Statement) controller settings.
+ * Configuration for Metadata (Conformance Statement) controller settings.
  *
  * <p>NOTE: Some optional properties are not set/supported by current implementation.
  */
@@ -45,7 +45,7 @@ public class ConformanceStatementProperties implements InitializingBean {
   private String description;
 
   /**
-   * Required for Capability resource type which is how this configuration class is currently used.
+   * Required for Conformance resource type which is how this configuration class is currently used.
    * A name the software is known by.
    */
   private String softwareName;
