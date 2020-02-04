@@ -3,12 +3,12 @@
   <parent>
     <artifactId>health-apis-informational-endpoints</artifactId>
     <groupId>gov.va.api.health.informational</groupId>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.8</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>base-r4</artifactId>
   <properties>
-    <r4.version>2.0.24</r4.version>
+    <r4.version>2.0.31</r4.version>
     <service-auto-config.version>3.1.12</service-auto-config.version>
   </properties>
   <dependencies>
