@@ -1,6 +1,6 @@
 package gov.va.api.health.informational.r4.capability;
 
-import gov.va.api.health.r4.api.resources.Capability;
+import gov.va.api.health.r4.api.resources.CapabilityStatement;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,5 +10,5 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class CapabilityResourcesProperties {
-  private List<Capability.CapabilityResource> resourcesToSupport;
+  private List<CapabilityStatement.CapabilityResource> resourcesToSupport;
 }

@@ -2,7 +2,7 @@ package gov.va.api.health.informational.r4.capability;
 
 import static org.junit.Assert.assertEquals;
 
-import gov.va.api.health.r4.api.resources.Capability;
+import gov.va.api.health.r4.api.resources.CapabilityStatement;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,8 +24,8 @@ public class SupportedResourceTest {
             .documentation(
                 "Implemented per specification. This is configurable. See http://hl7.org/fhir/R4/http.html")
             .build();
-    Capability.CapabilityResource capabilityResource = supportedResource.asResource();
-    List<Capability.SearchParam> searchParamsList = capabilityResource.searchParam();
+    CapabilityStatement.CapabilityResource capabilityResource = supportedResource.asResource();
+    List<CapabilityStatement.SearchParam> searchParamsList = capabilityResource.searchParam();
     assertEquals(2, searchParamsList.size());
     assertEquals(SearchParamsCustomEnum.DOCTOR.param(), searchParamsList.get(0).name());
     assertEquals(SearchParamsCustomEnum.DOCTOR.type(), searchParamsList.get(0).type());
@@ -38,11 +38,11 @@ public class SupportedResourceTest {
   @AllArgsConstructor
   @Accessors(fluent = true)
   public enum SearchParamsCustomEnum implements SearchParamsEnumInterface {
-    DOCTOR("doctor", Capability.SearchParamType.special),
-    PATIENT("patient", Capability.SearchParamType.number);
+    DOCTOR("doctor", CapabilityStatement.SearchParamType.special),
+    PATIENT("patient", CapabilityStatement.SearchParamType.number);
 
     private final String param;
 
-    private final Capability.SearchParamType type;
+    private final CapabilityStatement.SearchParamType type;
   }
 }

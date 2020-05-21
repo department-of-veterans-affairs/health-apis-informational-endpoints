@@ -4,7 +4,7 @@ import static gov.va.api.health.informational.r4.utils.JsonUtils.prettyJson;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
-import gov.va.api.health.r4.api.resources.Capability;
+import gov.va.api.health.r4.api.resources.CapabilityStatement;
 import java.io.IOException;
 import java.util.Optional;
 import lombok.SneakyThrows;
@@ -33,11 +33,12 @@ public class MetadataControllerTest {
     MetadataController controller =
         new MetadataController(capabilityStatementProperties, capabilityResourcesProperties);
     controller.afterPropertiesSet();
-    Capability old = null;
+    CapabilityStatement old = null;
     try {
       old =
           JacksonConfig.createMapper()
-              .readValue(getClass().getResourceAsStream("/capability.json"), Capability.class);
+              .readValue(
+                  getClass().getResourceAsStream("/capability.json"), CapabilityStatement.class);
     } catch (IOException e) {
       System.out.println("Couldn't load capability.json into an object");
       e.printStackTrace();

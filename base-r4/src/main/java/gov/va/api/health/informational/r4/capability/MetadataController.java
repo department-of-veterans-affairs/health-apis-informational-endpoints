@@ -1,7 +1,7 @@
 package gov.va.api.health.informational.r4.capability;
 
-import gov.va.api.health.r4.api.resources.Capability;
-import gov.va.api.health.r4.api.resources.Capability.Rest;
+import gov.va.api.health.r4.api.resources.CapabilityStatement;
+import gov.va.api.health.r4.api.resources.CapabilityStatement.Rest;
 import gov.va.api.health.r4.api.resources.Resource;
 import gov.va.api.health.r4.api.resources.TerminologyCapabilities;
 import java.util.Optional;
@@ -27,9 +27,9 @@ public class MetadataController implements InitializingBean {
 
   private final CapabilityResourcesProperties resourcesProperties;
 
-  private Capability capability;
+  private CapabilityStatement capability;
 
-  private Capability normative;
+  private CapabilityStatement normative;
 
   private TerminologyCapabilities terminology;
 
@@ -37,14 +37,14 @@ public class MetadataController implements InitializingBean {
   public void afterPropertiesSet() throws Exception {
     // Full Capability Statement.
     capability =
-        CapabilityUtilities.initializeCapabilityBuilder(
+        CapabilityUtilities.initializeCapabilityStatementBuilder(
             MetadataCapabilityStatementModeEnum.FULL.getResourceType(),
             capabilityStatementProperties,
             resourcesProperties);
-    // Normative Statement is the same as a full Capability Statement with trial-use portions
+    // Normative Statement is the same as a full CapabilityStatement with trial-use portions
     // removed.
     normative =
-        CapabilityUtilities.initializeCapabilityBuilder(
+        CapabilityUtilities.initializeCapabilityStatementBuilder(
             MetadataCapabilityStatementModeEnum.NORMATIVE.getResourceType(),
             capabilityStatementProperties,
             resourcesProperties);
@@ -57,7 +57,7 @@ public class MetadataController implements InitializingBean {
       for (Rest rest : normative.rest()) {
         rest.security(null);
         if (rest.resource() != null) {
-          for (Capability.CapabilityResource r : rest.resource()) {
+          for (CapabilityStatement.CapabilityResource r : rest.resource()) {
             r.supportedProfile(null);
             r.versioning(null);
             r.readHistory(null);
@@ -90,7 +90,7 @@ public class MetadataController implements InitializingBean {
    * http://hl7.org/fhir/r4/capabilitystatement.html
    *
    * @param mode Optional mode parameter to specify response resource type.
-   * @return Capability statement of how to use a FHIR server.
+   * @return CapabilityStatement of how to use a FHIR server.
    */
   @GetMapping
   public Resource read(@RequestParam("mode") Optional<String> mode) {

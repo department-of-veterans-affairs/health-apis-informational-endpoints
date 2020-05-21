@@ -1,6 +1,6 @@
 package gov.va.api.health.informational.r4.capability;
 
-import gov.va.api.health.r4.api.resources.Capability;
+import gov.va.api.health.r4.api.resources.CapabilityStatement;
 import org.junit.Test;
 
 /** Exercise afterPropertiesSet of CapabilitiesStatementProperties to increase code coverage. */
@@ -15,9 +15,9 @@ public class CapabilitiesStatementPropertiesTest {
     CapabilityStatementProperties config = new CapabilityStatementProperties();
     // Set required properties.
     config.setId("ID");
-    config.setStatus(Capability.Status.draft);
+    config.setStatus(CapabilityStatement.Status.draft);
     config.setPublicationDate("date");
-    config.setKind(Capability.Kind.instance);
+    config.setKind(CapabilityStatement.Kind.instance);
     config.setFhirVersion("4.0.0");
     config.setSoftwareName("test-service");
     CapabilityStatementProperties.SecurityProperties securityProperties =
