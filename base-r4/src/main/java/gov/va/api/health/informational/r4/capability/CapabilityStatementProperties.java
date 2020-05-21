@@ -1,7 +1,7 @@
 package gov.va.api.health.informational.r4.capability;
 
-import gov.va.api.health.r4.api.resources.Capability.Kind;
-import gov.va.api.health.r4.api.resources.Capability.Status;
+import gov.va.api.health.r4.api.resources.CapabilityStatement.Kind;
+import gov.va.api.health.r4.api.resources.CapabilityStatement.Status;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;

@@ -9,10 +9,10 @@ import gov.va.api.health.r4.api.datatypes.ContactDetail;
 import gov.va.api.health.r4.api.datatypes.ContactPoint;
 import gov.va.api.health.r4.api.datatypes.ContactPoint.ContactPointSystem;
 import gov.va.api.health.r4.api.elements.Extension;
-import gov.va.api.health.r4.api.resources.Capability;
-import gov.va.api.health.r4.api.resources.Capability.Rest;
-import gov.va.api.health.r4.api.resources.Capability.RestMode;
-import gov.va.api.health.r4.api.resources.Capability.Security;
+import gov.va.api.health.r4.api.resources.CapabilityStatement;
+import gov.va.api.health.r4.api.resources.CapabilityStatement.Rest;
+import gov.va.api.health.r4.api.resources.CapabilityStatement.RestMode;
+import gov.va.api.health.r4.api.resources.CapabilityStatement.Security;
 import gov.va.api.health.r4.api.resources.TerminologyCapabilities;
 import java.util.List;
 import lombok.experimental.UtilityClass;
@@ -21,13 +21,13 @@ import lombok.experimental.UtilityClass;
 public final class CapabilityUtilities {
 
   /**
-   * Capability Software description.
+   * CapabilityStatement Software description.
    *
-   * @return Capability Software.
+   * @return CapabilityStatement Software.
    */
-  private static Capability.Software capabilitySoftware(
+  private static CapabilityStatement.Software capabilitySoftware(
       CapabilityStatementProperties capabilityStatementProperties) {
-    return Capability.Software.builder()
+    return CapabilityStatement.Software.builder()
         .name(capabilityStatementProperties.getSoftwareName())
         .build();
   }
@@ -57,19 +57,19 @@ public final class CapabilityUtilities {
   }
 
   /**
-   * Initialize a Capability (Statement) with content that is the same for full and normative modes.
+   * Initialize a CapabilityStatement with content that is the same for full and normative modes.
    *
    * @param resourceType The resource type string to populate within the statement.
    * @param capabilityStatementProperties Configured capability properties.
    * @param resourcesProperties Configured resources properties.
-   * @return Capability (Statement).
+   * @return Capability.
    */
-  public static Capability initializeCapabilityBuilder(
+  public static CapabilityStatement initializeCapabilityStatementBuilder(
       final String resourceType,
       CapabilityStatementProperties capabilityStatementProperties,
       CapabilityResourcesProperties resourcesProperties) {
-    Capability.CapabilityBuilder capabilityBuilder =
-        Capability.builder()
+    CapabilityStatement.CapabilityStatementBuilder capabilityStatementBuilder =
+        CapabilityStatement.builder()
             .resourceType(resourceType)
             .id(capabilityStatementProperties.getId())
             .status(capabilityStatementProperties.getStatus())
@@ -82,28 +82,28 @@ public final class CapabilityUtilities {
     // Version is optional.
     if ((capabilityStatementProperties.getVersion() != null)
         && !capabilityStatementProperties.getVersion().isBlank()) {
-      capabilityBuilder.version(capabilityStatementProperties.getVersion());
+      capabilityStatementBuilder.version(capabilityStatementProperties.getVersion());
     }
     // Name is optional.
     if ((capabilityStatementProperties.getName() != null)
         && !capabilityStatementProperties.getName().isBlank()) {
-      capabilityBuilder.name(capabilityStatementProperties.getName());
+      capabilityStatementBuilder.name(capabilityStatementProperties.getName());
     }
     // Publisher is optional.
     if ((capabilityStatementProperties.getPublisher() != null)
         && !capabilityStatementProperties.getPublisher().isBlank()) {
-      capabilityBuilder.publisher(capabilityStatementProperties.getPublisher());
+      capabilityStatementBuilder.publisher(capabilityStatementProperties.getPublisher());
     }
     // Contact is optional.
     if (capabilityStatementProperties.getContact() != null) {
-      capabilityBuilder.contact(contact(capabilityStatementProperties));
+      capabilityStatementBuilder.contact(contact(capabilityStatementProperties));
     }
     // Description is optional.
     if ((capabilityStatementProperties.getDescription() != null)
         && !capabilityStatementProperties.getDescription().isBlank()) {
-      capabilityBuilder.description(capabilityStatementProperties.getDescription());
+      capabilityStatementBuilder.description(capabilityStatementProperties.getDescription());
     }
-    return capabilityBuilder.build();
+    return capabilityStatementBuilder.build();
   }
 
   /**
@@ -196,7 +196,7 @@ public final class CapabilityUtilities {
                                         .getAuthorizeEndpoint())
                                 .build()))
                     .build()))
-        .cors("true")
+        .cors(true)
         .service(singletonList(smartOnFhirCodeableConcept()))
         .description(capabilityStatementProperties.getSecurity().getDescription())
         .build();

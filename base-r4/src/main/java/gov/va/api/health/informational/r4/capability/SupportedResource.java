@@ -3,7 +3,7 @@ package gov.va.api.health.informational.r4.capability;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
-import gov.va.api.health.r4.api.resources.Capability;
+import gov.va.api.health.r4.api.resources.CapabilityStatement;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,13 +25,13 @@ public class SupportedResource {
   Set<SearchParamsEnumInterface> search;
 
   /**
-   * Convenience for building a lot of SupportedResources for a CapabilityStatement. Used in stream
-   * pattern found in test.
+   * Convenience for building a lot of SupportedResources for a CapabilityStatementStatement. Used
+   * in stream pattern found in test.
    *
    * @return CapabilityResource to show as supported
    */
-  public Capability.CapabilityResource asResource() {
-    return Capability.CapabilityResource.builder()
+  public CapabilityStatement.CapabilityResource asResource() {
+    return CapabilityStatement.CapabilityResource.builder()
         .type(type)
         .interaction(interactions())
         .searchParam(searchParams())
@@ -39,33 +39,33 @@ public class SupportedResource {
         .build();
   }
 
-  private List<Capability.ResourceInteraction> interactions() {
+  private List<CapabilityStatement.ResourceInteraction> interactions() {
     if (search.isEmpty()) {
       return singletonList(readable());
     }
     return asList(searchable(), readable());
   }
 
-  private Capability.ResourceInteraction readable() {
-    return Capability.ResourceInteraction.builder()
-        .code(Capability.TypeRestfulInteraction.read)
+  private CapabilityStatement.ResourceInteraction readable() {
+    return CapabilityStatement.ResourceInteraction.builder()
+        .code(CapabilityStatement.TypeRestfulInteraction.read)
         .documentation(documentation)
         .build();
   }
 
-  private List<Capability.SearchParam> searchParams() {
+  private List<CapabilityStatement.SearchParam> searchParams() {
     if (search.isEmpty()) {
       return null;
     }
     return search
         .stream()
-        .map(s -> Capability.SearchParam.builder().name(s.param()).type(s.type()).build())
+        .map(s -> CapabilityStatement.SearchParam.builder().name(s.param()).type(s.type()).build())
         .collect(Collectors.toList());
   }
 
-  private Capability.ResourceInteraction searchable() {
-    return Capability.ResourceInteraction.builder()
-        .code(Capability.TypeRestfulInteraction.search_type)
+  private CapabilityStatement.ResourceInteraction searchable() {
+    return CapabilityStatement.ResourceInteraction.builder()
+        .code(CapabilityStatement.TypeRestfulInteraction.search_type)
         .documentation(documentation)
         .build();
   }
