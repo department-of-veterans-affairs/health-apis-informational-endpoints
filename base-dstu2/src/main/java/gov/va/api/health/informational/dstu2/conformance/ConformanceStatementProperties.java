@@ -123,14 +123,19 @@ public class ConformanceStatementProperties implements InitializingBean {
   @Data
   public static class SecurityProperties implements InitializingBean {
 
+    /** Required. */
     private String tokenEndpoint;
 
+    /** Required. */
     private String authorizeEndpoint;
 
+    /** Required. */
     private String description;
 
+    /** Optional. */
     private String managementEndpoint;
 
+    /** Optional. */
     private String revocationEndpoint;
 
     @Override
