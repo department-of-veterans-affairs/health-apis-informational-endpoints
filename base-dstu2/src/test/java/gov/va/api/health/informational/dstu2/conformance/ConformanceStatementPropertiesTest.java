@@ -22,6 +22,8 @@ public class ConformanceStatementPropertiesTest {
     securityProperties.setAuthorizeEndpoint("https://example.com/oauth2/authorization");
     securityProperties.setTokenEndpoint("https://example.com/oauth2/token");
     securityProperties.setDescription("http://docs.smarthealthit.org/");
+    securityProperties.setManagementEndpoint("https://example.com/oauth2/manage");
+    securityProperties.setRevocationEndpoint("https://example.com/oauth2/revoke");
     config.setSecurity(securityProperties);
     return config;
   }
