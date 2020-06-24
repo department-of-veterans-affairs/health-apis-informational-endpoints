@@ -132,6 +132,10 @@ public class CapabilityStatementProperties implements InitializingBean {
 
     private String description;
 
+    private String managementEndpoint;
+
+    private String revocationEndpoint;
+
     @Override
     public void afterPropertiesSet() throws IllegalArgumentException {
       Assert.hasText(tokenEndpoint, "SecurityProperties tokenEndpoint must not be null or empty.");
