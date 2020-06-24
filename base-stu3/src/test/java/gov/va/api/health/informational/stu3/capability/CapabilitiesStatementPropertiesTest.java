@@ -23,8 +23,6 @@ public class CapabilitiesStatementPropertiesTest {
         new CapabilityStatementProperties.SecurityProperties();
     securityProperties.setAuthorizeEndpoint("https://example.com/oauth2/authorization");
     securityProperties.setTokenEndpoint("https://example.com/oauth2/token");
-    securityProperties.setManagementEndpoint("https://example.com/oauth2/manage");
-    securityProperties.setRevocationEndpoint("https://example.com/oauth2/revoke");
     securityProperties.setDescription("http://docs.smarthealthit.org/");
     config.setSecurity(securityProperties);
     return config;
