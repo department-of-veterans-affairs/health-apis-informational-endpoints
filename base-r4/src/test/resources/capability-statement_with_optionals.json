@@ -146,7 +146,7 @@
                             },
                             {
                                 "id" : null,
-                                "url" : "management",
+                                "url" : "manage",
                                 "extension" : null,
                                 "valueBase64Binary" : null,
                                 "valueBoolean" : null,
@@ -181,7 +181,7 @@
                             },
                             {
                                 "id" : null,
-                                "url" : "revocation",
+                                "url" : "revoke",
                                 "extension" : null,
                                 "valueBase64Binary" : null,
                                 "valueBoolean" : null,

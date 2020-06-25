@@ -153,7 +153,7 @@
                             },
                             {
                                 "id" : null,
-                                "url" : "management",
+                                "url" : "manage",
                                 "extension" : null,
                                 "valueInteger" : null,
                                 "valueUnsignedInt" : null,
@@ -191,7 +191,7 @@
                             },
                             {
                                 "id" : null,
-                                "url" : "revocation",
+                                "url" : "revoke",
                                 "extension" : null,
                                 "valueInteger" : null,
                                 "valueUnsignedInt" : null,

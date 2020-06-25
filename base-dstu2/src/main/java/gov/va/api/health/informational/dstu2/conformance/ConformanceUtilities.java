@@ -65,11 +65,11 @@ public final class ConformanceUtilities {
                     .build()));
     if (security.getManagementEndpoint() != null) {
       extentions.add(
-          Extension.builder().url("management").valueUri(security.getManagementEndpoint()).build());
+          Extension.builder().url("manage").valueUri(security.getManagementEndpoint()).build());
     }
     if (security.getRevocationEndpoint() != null) {
       extentions.add(
-          Extension.builder().url("revocation").valueUri(security.getRevocationEndpoint()).build());
+          Extension.builder().url("revoke").valueUri(security.getRevocationEndpoint()).build());
     }
     return Collections.unmodifiableList(extentions);
   }
