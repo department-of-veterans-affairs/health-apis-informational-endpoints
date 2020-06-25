@@ -8,7 +8,8 @@ import gov.va.api.health.dstu2.api.datatypes.Coding;
 import gov.va.api.health.dstu2.api.datatypes.ContactPoint;
 import gov.va.api.health.dstu2.api.elements.Extension;
 import gov.va.api.health.dstu2.api.resources.Conformance;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.experimental.UtilityClass;
 
@@ -55,9 +56,13 @@ public final class ConformanceUtilities {
   private static List<Extension> extentionsFromSecurity(
       ConformanceStatementProperties.SecurityProperties security) {
     List<Extension> extentions =
-        Arrays.asList(
-            Extension.builder().url("token").valueUri(security.getTokenEndpoint()).build(),
-            Extension.builder().url("authorize").valueUri(security.getAuthorizeEndpoint()).build());
+        new ArrayList<Extension>(
+            asList(
+                Extension.builder().url("token").valueUri(security.getTokenEndpoint()).build(),
+                Extension.builder()
+                    .url("authorize")
+                    .valueUri(security.getAuthorizeEndpoint())
+                    .build()));
     if (security.getManagementEndpoint() != null) {
       extentions.add(
           Extension.builder().url("management").valueUri(security.getManagementEndpoint()).build());
@@ -66,7 +71,7 @@ public final class ConformanceUtilities {
       extentions.add(
           Extension.builder().url("revocation").valueUri(security.getRevocationEndpoint()).build());
     }
-    return extentions;
+    return Collections.unmodifiableList(extentions);
   }
 
   /**
