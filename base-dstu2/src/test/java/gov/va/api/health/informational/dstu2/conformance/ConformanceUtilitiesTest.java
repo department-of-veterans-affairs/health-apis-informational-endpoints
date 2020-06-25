@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -40,9 +41,25 @@ public class ConformanceUtilitiesTest {
     final Conformance conformance =
         ConformanceUtilities.initializeConformanceBuilder(
             "Conformance", conformanceStatementProperties, conformanceResourcesProperties);
-
     assertEquals(expectedConformance, conformance);
   }
+
+  @Test
+  @SneakyThrows
+  @DirtiesContext
+  public void capabilityUtilitiesMinTest() {
+    conformanceStatementProperties.getSecurity().setManagementEndpoint(null);
+    conformanceStatementProperties.getSecurity().setRevocationEndpoint(null);
+    final Conformance expectedConformance =
+        mapper.readValue(
+            Paths.get("src", "test", "resources", "conformance_minimum.json").toFile(),
+            Conformance.class);
+    final Conformance conformance =
+        ConformanceUtilities.initializeConformanceBuilder(
+            "Conformance", conformanceStatementProperties, conformanceResourcesProperties);
+    assertEquals(expectedConformance, conformance);
+  }
+
 
   // Loads our properties file into a ConformanceStatementProperties bean that we can use.
   @EnableConfigurationProperties(value = ConformanceStatementProperties.class)
