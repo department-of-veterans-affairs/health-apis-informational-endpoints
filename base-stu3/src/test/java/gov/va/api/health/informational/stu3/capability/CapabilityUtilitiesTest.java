@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -43,6 +44,25 @@ public class CapabilityUtilitiesTest {
             "CapabilityStatement", capabilityStatementProperties, capabilityResourcesProperties);
 
     assertEquals(expectedCapability, capability);
+  }
+
+  @Test
+  @SneakyThrows
+  @DirtiesContext
+  public void capabilityUtilitiesWithOptionalsTest() {
+
+    capabilityStatementProperties.getSecurity().setManagementEndpoint("unset");
+    capabilityStatementProperties.getSecurity().setRevocationEndpoint("unset");
+
+    final CapabilityStatement expectedCapability =
+        mapper.readValue(
+            Paths.get("src", "test", "resources", "capability-statement_with_optionals.json")
+                .toFile(),
+            CapabilityStatement.class);
+
+    final CapabilityStatement capability =
+        CapabilityUtilities.initializeCapabilityBuilder(
+            "CapabilityStatement", capabilityStatementProperties, capabilityResourcesProperties);
   }
 
   // Loads our properties file into a CapabilityStatementProperties bean that we can use.
