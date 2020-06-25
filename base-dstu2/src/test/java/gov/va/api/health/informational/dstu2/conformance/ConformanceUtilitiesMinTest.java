@@ -11,15 +11,16 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-  classes = {ConformanceUtilitiesTest.TestConfiguration.class, MetadataTestConfig.class},
+  classes = {ConformanceUtilitiesMinTest.TestConfiguration.class, MetadataTestConfig.class},
   initializers = ConfigFileApplicationContextInitializer.class
 )
-public class ConformanceUtilitiesTest {
+public class ConformanceUtilitiesMinTest {
 
   @Autowired ConformanceStatementProperties conformanceStatementProperties;
 
@@ -28,13 +29,16 @@ public class ConformanceUtilitiesTest {
   /** Object mapper to translate json to/from objects. */
   private ObjectMapper mapper = new ObjectMapper();
 
-  /** Demonstrate the capability utilities can create a capability statement from properties. */
   @Test
   @SneakyThrows
+  @DirtiesContext
   public void capabilityUtilitiesTest() {
+    conformanceStatementProperties.getSecurity().setManagementEndpoint(null);
+    conformanceStatementProperties.getSecurity().setRevocationEndpoint(null);
     final Conformance expectedConformance =
         mapper.readValue(
-            Paths.get("src", "test", "resources", "conformance.json").toFile(), Conformance.class);
+            Paths.get("src", "test", "resources", "conformance_minimum.json").toFile(),
+            Conformance.class);
     final Conformance conformance =
         ConformanceUtilities.initializeConformanceBuilder(
             "Conformance", conformanceStatementProperties, conformanceResourcesProperties);
