@@ -1,0 +1,182 @@
+{
+    "id" : "health-api-argonaut-conformance",
+    "resourceType" : "Conformance",
+    "meta" : null,
+    "implicitRules" : null,
+    "language" : null,
+    "text" : null,
+    "contained" : null,
+    "extension" : null,
+    "modifierExtension" : null,
+    "url" : null,
+    "version" : "@project.version@",
+    "name" : "API Management Platform | Health - Argonaut",
+    "status" : null,
+    "experimental" : null,
+    "publisher" : "Department of Veterans Affairs",
+    "contact" : [
+        {
+            "id" : null,
+            "modifierExtension" : null,
+            "extension" : null,
+            "name" : "unset",
+            "telecom" : [
+                {
+                    "id" : null,
+                    "extension" : null,
+                    "system" : "email",
+                    "value" : "unset",
+                    "use" : null,
+                    "rank" : null,
+                    "period" : null
+                }
+            ]
+        }
+    ],
+    "date" : "@conformance.publication-date@",
+    "description" : "Read and search support Argonaut Data Query.",
+    "requirements" : null,
+    "copyright" : null,
+    "kind" : "capability",
+    "software" : {
+        "id" : null,
+        "modifierExtension" : null,
+        "extension" : null,
+        "name" : "@project.artifactId@",
+        "version" : null,
+        "releaseDate" : null
+    },
+    "implementation" : null,
+    "fhirVersion" : "1.0.2",
+    "acceptUnknown" : "no",
+    "format" : [
+        "application/json+fhir",
+        "application/json",
+        "application/fhir+json"
+    ],
+    "profile" : null,
+    "rest" : [
+        {
+            "id" : null,
+            "modifierExtension" : null,
+            "extension" : null,
+            "mode" : "server",
+            "documentation" : null,
+            "security" : {
+                "id" : null,
+                "modifierExtension" : null,
+                "extension" : [
+                    {
+                        "id" : null,
+                        "url" : "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris",
+                        "extension" : [
+                            {
+                                "id" : null,
+                                "url" : "token",
+                                "extension" : null,
+                                "valueInteger" : null,
+                                "valueDecimal" : null,
+                                "valueDateTime" : null,
+                                "valueDate" : null,
+                                "valueInstant" : null,
+                                "valueString" : null,
+                                "valueUri" : "unset",
+                                "valueBoolean" : null,
+                                "valueCode" : null,
+                                "valueBase64Binary" : null,
+                                "valueCoding" : null,
+                                "valueCodeableConcept" : null,
+                                "valueIdentifier" : null,
+                                "valueQuantity" : null,
+                                "valueAttachment" : null,
+                                "valueRange" : null,
+                                "valuePeriod" : null,
+                                "valueRatio" : null,
+                                "valueHumanName" : null,
+                                "valueAddress" : null,
+                                "valueContactPoint" : null,
+                                "valueReference" : null
+                            },
+                            {
+                                "id" : null,
+                                "url" : "authorize",
+                                "extension" : null,
+                                "valueInteger" : null,
+                                "valueDecimal" : null,
+                                "valueDateTime" : null,
+                                "valueDate" : null,
+                                "valueInstant" : null,
+                                "valueString" : null,
+                                "valueUri" : "unset",
+                                "valueBoolean" : null,
+                                "valueCode" : null,
+                                "valueBase64Binary" : null,
+                                "valueCoding" : null,
+                                "valueCodeableConcept" : null,
+                                "valueIdentifier" : null,
+                                "valueQuantity" : null,
+                                "valueAttachment" : null,
+                                "valueRange" : null,
+                                "valuePeriod" : null,
+                                "valueRatio" : null,
+                                "valueHumanName" : null,
+                                "valueAddress" : null,
+                                "valueContactPoint" : null,
+                                "valueReference" : null
+                            }
+                        ],
+                        "valueInteger" : null,
+                        "valueDecimal" : null,
+                        "valueDateTime" : null,
+                        "valueDate" : null,
+                        "valueInstant" : null,
+                        "valueString" : null,
+                        "valueUri" : null,
+                        "valueBoolean" : null,
+                        "valueCode" : null,
+                        "valueBase64Binary" : null,
+                        "valueCoding" : null,
+                        "valueCodeableConcept" : null,
+                        "valueIdentifier" : null,
+                        "valueQuantity" : null,
+                        "valueAttachment" : null,
+                        "valueRange" : null,
+                        "valuePeriod" : null,
+                        "valueRatio" : null,
+                        "valueHumanName" : null,
+                        "valueAddress" : null,
+                        "valueContactPoint" : null,
+                        "valueReference" : null
+                    }
+                ],
+                "cors" : true,
+                "service" : [
+                    {
+                        "id" : null,
+                        "extension" : null,
+                        "coding" : [
+                            {
+                                "system" : "http://hl7.org/fhir/restful-security-service",
+                                "version" : null,
+                                "code" : "SMART-on-FHIR",
+                                "display" : "SMART-on-FHIR",
+                                "userSelected" : null
+                            }
+                        ],
+                        "text" : null
+                    }
+                ],
+                "description" : "http://docs.smarthealthit.org/",
+                "certificate" : null
+            },
+            "resource" : [ ],
+            "interaction" : null,
+            "transactionMode" : null,
+            "searchParam" : null,
+            "operation" : null,
+            "compartment" : null
+        }
+    ],
+    "messaging" : null,
+    "document" : null
+}

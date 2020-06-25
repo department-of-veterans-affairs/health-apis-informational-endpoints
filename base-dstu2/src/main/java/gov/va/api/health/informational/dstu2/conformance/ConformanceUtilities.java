@@ -8,6 +8,7 @@ import gov.va.api.health.dstu2.api.datatypes.Coding;
 import gov.va.api.health.dstu2.api.datatypes.ContactPoint;
 import gov.va.api.health.dstu2.api.elements.Extension;
 import gov.va.api.health.dstu2.api.resources.Conformance;
+import java.util.Arrays;
 import java.util.List;
 import lombok.experimental.UtilityClass;
 
@@ -49,6 +50,23 @@ public final class ConformanceUtilities {
                   .build()));
     }
     return singletonList(contactDetailBuilder.build());
+  }
+
+  private static List<Extension> extentionsFromSecurity(
+      ConformanceStatementProperties.SecurityProperties security) {
+    List<Extension> extentions =
+        Arrays.asList(
+            Extension.builder().url("token").valueUri(security.getTokenEndpoint()).build(),
+            Extension.builder().url("authorize").valueUri(security.getAuthorizeEndpoint()).build());
+    if (security.getManagementEndpoint() != null) {
+      extentions.add(
+          Extension.builder().url("management").valueUri(security.getManagementEndpoint()).build());
+    }
+    if (security.getRevocationEndpoint() != null) {
+      extentions.add(
+          Extension.builder().url("revocation").valueUri(security.getRevocationEndpoint()).build());
+    }
+    return extentions;
   }
 
   /**
@@ -136,34 +154,7 @@ public final class ConformanceUtilities {
             singletonList(
                 Extension.builder()
                     .url("http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris")
-                    .extension(
-                        asList(
-                            Extension.builder()
-                                .url("token")
-                                .valueUri(
-                                    conformanceStatementProperties.getSecurity().getTokenEndpoint())
-                                .build(),
-                            Extension.builder()
-                                .url("authorize")
-                                .valueUri(
-                                    conformanceStatementProperties
-                                        .getSecurity()
-                                        .getAuthorizeEndpoint())
-                                .build(),
-                            Extension.builder()
-                                .url("management")
-                                .valueUri(
-                                    conformanceStatementProperties
-                                        .getSecurity()
-                                        .getManagementEndpoint())
-                                .build(),
-                            Extension.builder()
-                                .url("revocation")
-                                .valueUri(
-                                    conformanceStatementProperties
-                                        .getSecurity()
-                                        .getRevocationEndpoint())
-                                .build()))
+                    .extension(extentionsFromSecurity(conformanceStatementProperties.getSecurity()))
                     .build()))
         .cors(true)
         .service(singletonList(smartOnFhirCodeableConcept()))
