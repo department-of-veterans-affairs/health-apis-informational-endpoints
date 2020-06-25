@@ -149,6 +149,20 @@ public final class ConformanceUtilities {
                                     conformanceStatementProperties
                                         .getSecurity()
                                         .getAuthorizeEndpoint())
+                                .build(),
+                            Extension.builder()
+                                .url("management")
+                                .valueUri(
+                                    conformanceStatementProperties
+                                        .getSecurity()
+                                        .getManagementEndpoint())
+                                .build(),
+                            Extension.builder()
+                                .url("revocation")
+                                .valueUri(
+                                    conformanceStatementProperties
+                                        .getSecurity()
+                                        .getRevocationEndpoint())
                                 .build()))
                     .build()))
         .cors(true)
