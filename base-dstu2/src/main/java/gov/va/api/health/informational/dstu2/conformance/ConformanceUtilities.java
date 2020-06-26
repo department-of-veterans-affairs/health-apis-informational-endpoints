@@ -67,7 +67,7 @@ public final class ConformanceUtilities {
         .getManagementEndpoint()
         .ifPresent(val -> extentions.add(Extension.builder().url("manage").valueUri(val).build()));
     security
-        .getManagementEndpoint()
+        .getRevocationEndpoint()
         .ifPresent(val -> extentions.add(Extension.builder().url("revoke").valueUri(val).build()));
     return Collections.unmodifiableList(extentions);
   }
