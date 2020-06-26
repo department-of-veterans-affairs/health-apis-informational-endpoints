@@ -63,14 +63,12 @@ public final class CapabilityUtilities {
                     .url("authorize")
                     .valueUri(security.getAuthorizeEndpoint())
                     .build()));
-    if (security.getManagementEndpoint() != null) {
-      extentions.add(
-          Extension.builder().url("manage").valueUri(security.getManagementEndpoint()).build());
-    }
-    if (security.getRevocationEndpoint() != null) {
-      extentions.add(
-          Extension.builder().url("revoke").valueUri(security.getRevocationEndpoint()).build());
-    }
+    security
+        .getManagementEndpoint()
+        .ifPresent(val -> extentions.add(Extension.builder().url("manage").valueUri(val).build()));
+    security
+        .getRevocationEndpoint()
+        .ifPresent(val -> extentions.add(Extension.builder().url("revoke").valueUri(val).build()));
     return Collections.unmodifiableList(extentions);
   }
 

@@ -22,9 +22,10 @@ public final class WellKnownUtilities {
             .authorizationEndpoint(
                 capabilityStatementProperties.getSecurity().getAuthorizeEndpoint())
             .tokenEndpoint(capabilityStatementProperties.getSecurity().getTokenEndpoint())
-            .managementEndpoint(capabilityStatementProperties.getSecurity().getManagementEndpoint())
+            .managementEndpoint(
+                capabilityStatementProperties.getSecurity().getManagementEndpoint().get())
             .revocationEndpoint(
-                capabilityStatementProperties.getSecurity().getRevocationEndpoint());
+                capabilityStatementProperties.getSecurity().getRevocationEndpoint().get());
     if (wellKnownProperties != null) {
       if ((wellKnownProperties.getCapabilities() != null)
           && !wellKnownProperties.getCapabilities().isEmpty()) {
