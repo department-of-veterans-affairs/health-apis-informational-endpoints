@@ -1,0 +1,19 @@
+{
+    "authorizationEndpoint" : "https://example.com/oauth2/authorization",
+    "tokenEndpoint" : "https://example.com/oauth2/token",
+    "tokenEndpointAuthMethodsSupported" : null,
+    "registrationEndpoint" : null,
+    "scopesSupported" : [
+        "patient/Claims.read"
+    ],
+    "responseTypeSupported" : [
+        "code",
+        "refresh_token"
+    ],
+    "managementEndpoint" : null,
+    "introspectionEndpoint" : null,
+    "revocationEndpoint" : null,
+    "capabilities" : [
+        "permission-dev"
+    ]
+}

@@ -1,9 +1,9 @@
-package gov.va.api.health.informational.stu3.capability;
+package gov.va.api.health.informational.r4.capability;
 
 import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.va.api.health.stu3.api.resources.CapabilityStatement;
+import gov.va.api.health.r4.api.resources.CapabilityStatement;
 import java.nio.file.Paths;
 import java.util.Optional;
 import lombok.SneakyThrows;
@@ -41,7 +41,7 @@ public class CapabilityUtilitiesTest {
             CapabilityStatement.class);
 
     final CapabilityStatement capability =
-        CapabilityUtilities.initializeCapabilityBuilder(
+        CapabilityUtilities.initializeCapabilityStatementBuilder(
             "CapabilityStatement", capabilityStatementProperties, capabilityResourcesProperties);
 
     assertEquals(expectedCapability, capability);
@@ -52,8 +52,12 @@ public class CapabilityUtilitiesTest {
   @DirtiesContext
   public void capabilityUtilitiesWithOptionalsTest() {
 
-    capabilityStatementProperties.getSecurity().setManagementEndpoint(Optional.of("unset"));
-    capabilityStatementProperties.getSecurity().setRevocationEndpoint(Optional.of("unset"));
+    capabilityStatementProperties
+        .getSecurity()
+        .setManagementEndpoint(Optional.of("https://example.com/oauth2/manage"));
+    capabilityStatementProperties
+        .getSecurity()
+        .setRevocationEndpoint(Optional.of("https://example.com/oauth2/revoke"));
 
     final CapabilityStatement expectedCapability =
         mapper.readValue(
@@ -62,8 +66,10 @@ public class CapabilityUtilitiesTest {
             CapabilityStatement.class);
 
     final CapabilityStatement capability =
-        CapabilityUtilities.initializeCapabilityBuilder(
+        CapabilityUtilities.initializeCapabilityStatementBuilder(
             "CapabilityStatement", capabilityStatementProperties, capabilityResourcesProperties);
+
+    assertEquals(expectedCapability, capability);
   }
 
   // Loads our properties file into a CapabilityStatementProperties bean that we can use.

@@ -1,5 +1,6 @@
 package gov.va.api.health.informational.dstu2.conformance;
 
+import java.util.Optional;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -133,10 +134,10 @@ public class ConformanceStatementProperties implements InitializingBean {
     private String description;
 
     /** Optional. */
-    private String managementEndpoint;
+    private Optional<String> managementEndpoint = Optional.ofNullable(null);
 
     /** Optional. */
-    private String revocationEndpoint;
+    private Optional<String> revocationEndpoint = Optional.ofNullable(null);
 
     @Override
     public void afterPropertiesSet() throws IllegalArgumentException {

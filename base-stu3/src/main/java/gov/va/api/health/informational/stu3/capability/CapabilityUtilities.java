@@ -9,6 +9,8 @@ import gov.va.api.health.stu3.api.datatypes.ContactDetail;
 import gov.va.api.health.stu3.api.datatypes.ContactPoint;
 import gov.va.api.health.stu3.api.elements.Extension;
 import gov.va.api.health.stu3.api.resources.CapabilityStatement;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.experimental.UtilityClass;
 
@@ -49,6 +51,25 @@ public final class CapabilityUtilities {
                   .build()));
     }
     return singletonList(contactDetailBuilder.build());
+  }
+
+  private static List<Extension> extentionsFromSecurity(
+      CapabilityStatementProperties.SecurityProperties security) {
+    List<Extension> extentions =
+        new ArrayList<Extension>(
+            asList(
+                Extension.builder().url("token").valueUri(security.getTokenEndpoint()).build(),
+                Extension.builder()
+                    .url("authorize")
+                    .valueUri(security.getAuthorizeEndpoint())
+                    .build()));
+    security
+        .getManagementEndpoint()
+        .ifPresent(val -> extentions.add(Extension.builder().url("manage").valueUri(val).build()));
+    security
+        .getRevocationEndpoint()
+        .ifPresent(val -> extentions.add(Extension.builder().url("revoke").valueUri(val).build()));
+    return Collections.unmodifiableList(extentions);
   }
 
   /**
@@ -134,20 +155,7 @@ public final class CapabilityUtilities {
             singletonList(
                 Extension.builder()
                     .url("http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris")
-                    .extension(
-                        asList(
-                            Extension.builder()
-                                .url("token")
-                                .valueUri(
-                                    capabilityStatementProperties.getSecurity().getTokenEndpoint())
-                                .build(),
-                            Extension.builder()
-                                .url("authorize")
-                                .valueUri(
-                                    capabilityStatementProperties
-                                        .getSecurity()
-                                        .getAuthorizeEndpoint())
-                                .build()))
+                    .extension(extentionsFromSecurity(capabilityStatementProperties.getSecurity()))
                     .build()))
         .cors(true)
         .service(singletonList(smartOnFhirCodeableConcept()))
