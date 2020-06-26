@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.api.health.r4.api.resources.CapabilityStatement;
 import java.nio.file.Paths;
+import java.util.Optional;
 import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,10 +54,10 @@ public class CapabilityUtilitiesTest {
 
     capabilityStatementProperties
         .getSecurity()
-        .setManagementEndpoint("https://example.com/oauth2/manage");
+        .setManagementEndpoint(Optional.of("https://example.com/oauth2/manage"));
     capabilityStatementProperties
         .getSecurity()
-        .setRevocationEndpoint("https://example.com/oauth2/revoke");
+        .setRevocationEndpoint(Optional.of("https://example.com/oauth2/revoke"));
 
     final CapabilityStatement expectedCapability =
         mapper.readValue(

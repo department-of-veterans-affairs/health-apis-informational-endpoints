@@ -134,10 +134,10 @@ public class ConformanceStatementProperties implements InitializingBean {
     private String description;
 
     /** Optional. */
-    private Optional<String> managementEndpoint;
+    private Optional<String> managementEndpoint = Optional.ofNullable(null);
 
     /** Optional. */
-    private Optional<String> revocationEndpoint;
+    private Optional<String> revocationEndpoint = Optional.ofNullable(null);
 
     @Override
     public void afterPropertiesSet() throws IllegalArgumentException {

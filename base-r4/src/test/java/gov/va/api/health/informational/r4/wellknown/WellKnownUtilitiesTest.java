@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.api.health.informational.r4.capability.CapabilityStatementProperties;
 import gov.va.api.health.r4.api.information.WellKnown;
 import java.nio.file.Paths;
+import java.util.Optional;
 import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,10 +51,10 @@ public class WellKnownUtilitiesTest {
   public void testBuilderWithOptionals() {
     capabilityStatementProperties
         .getSecurity()
-        .setManagementEndpoint("https://example.com/oauth2/manage");
+        .setManagementEndpoint(Optional.of("https://example.com/oauth2/manage"));
     capabilityStatementProperties
         .getSecurity()
-        .setRevocationEndpoint("https://example.com/oauth2/revoke");
+        .setRevocationEndpoint(Optional.of("https://example.com/oauth2/revoke"));
     final WellKnown expected =
         mapper.readValue(
             Paths.get("src", "test", "resources", "wellknown_with_optionals.json").toFile(),

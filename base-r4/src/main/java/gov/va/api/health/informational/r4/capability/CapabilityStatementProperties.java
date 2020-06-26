@@ -2,6 +2,7 @@ package gov.va.api.health.informational.r4.capability;
 
 import gov.va.api.health.r4.api.resources.CapabilityStatement.Kind;
 import gov.va.api.health.r4.api.resources.CapabilityStatement.Status;
+import java.util.Optional;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -136,10 +137,10 @@ public class CapabilityStatementProperties implements InitializingBean {
     private String description;
 
     /** Optional. */
-    private String managementEndpoint;
+    private Optional<String> managementEndpoint = Optional.ofNullable(null);
 
     /** Optional. */
-    private String revocationEndpoint;
+    private Optional<String> revocationEndpoint = Optional.ofNullable(null);
 
     @Override
     public void afterPropertiesSet() throws IllegalArgumentException {

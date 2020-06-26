@@ -5,12 +5,14 @@ import static org.junit.Assert.assertEquals;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.api.health.stu3.api.resources.CapabilityStatement;
 import java.nio.file.Paths;
+import java.util.Optional;
 import lombok.SneakyThrows;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -45,25 +47,24 @@ public class CapabilityUtilitiesTest {
     assertEquals(expectedCapability, capability);
   }
 
-  //  @Test
-  //  @SneakyThrows
-  //  @DirtiesContext
-  //  public void capabilityUtilitiesWithOptionalsTest() {
-  //
-  //    capabilityStatementProperties.getSecurity().setManagementEndpoint(Optional.of("unset"));
-  //    capabilityStatementProperties.getSecurity().setRevocationEndpoint(Optional.of("unset"));
-  //
-  //    final CapabilityStatement expectedCapability =
-  //        mapper.readValue(
-  //            Paths.get("src", "test", "resources", "capability-statement_with_optionals.json")
-  //                .toFile(),
-  //            CapabilityStatement.class);
-  //
-  //    final CapabilityStatement capability =
-  //        CapabilityUtilities.initializeCapabilityBuilder(
-  //            "CapabilityStatement", capabilityStatementProperties,
-  // capabilityResourcesProperties);
-  //  }
+  @Test
+  @SneakyThrows
+  @DirtiesContext
+  public void capabilityUtilitiesWithOptionalsTest() {
+
+    capabilityStatementProperties.getSecurity().setManagementEndpoint(Optional.of("unset"));
+    capabilityStatementProperties.getSecurity().setRevocationEndpoint(Optional.of("unset"));
+
+    final CapabilityStatement expectedCapability =
+        mapper.readValue(
+            Paths.get("src", "test", "resources", "capability-statement_with_optionals.json")
+                .toFile(),
+            CapabilityStatement.class);
+
+    final CapabilityStatement capability =
+        CapabilityUtilities.initializeCapabilityBuilder(
+            "CapabilityStatement", capabilityStatementProperties, capabilityResourcesProperties);
+  }
 
   // Loads our properties file into a CapabilityStatementProperties bean that we can use.
   @EnableConfigurationProperties(value = CapabilityStatementProperties.class)
