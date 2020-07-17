@@ -52,7 +52,6 @@ public class WellKnownControllerTest {
   }
 
   @EnableConfigurationProperties(
-    value = {CapabilityStatementProperties.class, WellKnownProperties.class}
-  )
+      value = {CapabilityStatementProperties.class, WellKnownProperties.class})
   public static class TestConfiguration {}
 }

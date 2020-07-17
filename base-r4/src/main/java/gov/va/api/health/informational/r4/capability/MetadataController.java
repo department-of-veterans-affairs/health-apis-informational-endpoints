@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(
-  value = {"/metadata"},
-  produces = {"application/json", "application/json+fhir", "application/fhir+json"}
-)
+    value = {"/metadata"},
+    produces = {"application/json", "application/json+fhir", "application/fhir+json"})
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 @Slf4j
 public class MetadataController implements InitializingBean {

@@ -18,9 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-  classes = {ConformanceUtilitiesTest.TestConfiguration.class, MetadataTestConfig.class},
-  initializers = ConfigFileApplicationContextInitializer.class
-)
+    classes = {ConformanceUtilitiesTest.TestConfiguration.class, MetadataTestConfig.class},
+    initializers = ConfigFileApplicationContextInitializer.class)
 public class ConformanceUtilitiesTest {
 
   @Autowired ConformanceStatementProperties conformanceStatementProperties;

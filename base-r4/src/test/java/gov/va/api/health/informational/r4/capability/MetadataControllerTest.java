@@ -18,8 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-  classes = {MetadataControllerTest.TestConfiguration.class, MetadataTestConfig.class}
-)
+    classes = {MetadataControllerTest.TestConfiguration.class, MetadataTestConfig.class})
 @TestPropertySource("/application.properties")
 public class MetadataControllerTest {
 

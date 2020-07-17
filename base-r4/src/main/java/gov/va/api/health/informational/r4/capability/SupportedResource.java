@@ -57,8 +57,7 @@ public class SupportedResource {
     if (search.isEmpty()) {
       return null;
     }
-    return search
-        .stream()
+    return search.stream()
         .map(s -> CapabilityStatement.SearchParam.builder().name(s.param()).type(s.type()).build())
         .collect(Collectors.toList());
   }
