@@ -40,9 +40,8 @@ public class OpenApiController {
    * serving the openapi.json directly is any different
    */
   @GetMapping(
-    value = {"/openapi.json", "/api/openapi.json"},
-    produces = "application/json"
-  )
+      value = {"/openapi.json", "/api/openapi.json"},
+      produces = "application/json")
   @ResponseBody
   public String openapiJson() throws IOException {
     Object obj = OpenApiController.MAPPER.readValue(openapiContent(), Object.class);
@@ -52,9 +51,8 @@ public class OpenApiController {
 
   /** Provide access to the OpenAPI yaml via RESTful interface. */
   @GetMapping(
-    value = {"/openapi.yaml", "/api/openapi.yaml"},
-    produces = "application/vnd.oai.openapi"
-  )
+      value = {"/openapi.yaml", "/api/openapi.yaml"},
+      produces = "application/vnd.oai.openapi")
   @ResponseBody
   public String openapiYaml() throws IOException {
     return openapiContent();
