@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>base-stu3</artifactId>
   <properties>
-    <stu3.version>2.0.41</stu3.version>
+    <stu3.version>4.0.2</stu3.version>
     <service-auto-config.version>7.0.2</service-auto-config.version>
     <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
   </properties>
