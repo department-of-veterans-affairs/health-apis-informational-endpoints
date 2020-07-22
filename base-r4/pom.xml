@@ -9,7 +9,7 @@
   <artifactId>base-r4</artifactId>
   <properties>
     <r4.version>3.0.15</r4.version>
-    <service-auto-config.version>7.0.1</service-auto-config.version>
+    <service-auto-config.version>7.0.2</service-auto-config.version>
   </properties>
   <dependencies>
     <dependency>

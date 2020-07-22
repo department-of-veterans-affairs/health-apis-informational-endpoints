@@ -9,7 +9,7 @@
   <artifactId>base-dstu2</artifactId>
   <properties>
     <dstu2.version>2.0.41</dstu2.version>
-    <service-auto-config.version>3.1.12</service-auto-config.version>
+    <service-auto-config.version>7.0.2</service-auto-config.version>
     <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
   </properties>
   <dependencies>
