@@ -19,12 +19,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-  classes = {
-    WellKnownUtilitiesTest.TestConfiguration.class,
-    WellKnownUtilitiesTest.TestConfiguration2.class
-  },
-  initializers = ConfigFileApplicationContextInitializer.class
-)
+    classes = {
+      WellKnownUtilitiesTest.TestConfiguration.class,
+      WellKnownUtilitiesTest.TestConfiguration2.class
+    },
+    initializers = ConfigFileApplicationContextInitializer.class)
 public class WellKnownUtilitiesTest {
   @Autowired CapabilityStatementProperties capabilityStatementProperties;
 

@@ -6,7 +6,6 @@ import gov.va.api.health.r4.api.resources.Resource;
 import gov.va.api.health.r4.api.resources.TerminologyCapabilities;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(
-  value = {"/metadata"},
-  produces = {"application/json", "application/json+fhir", "application/fhir+json"}
-)
+    value = {"/metadata"},
+    produces = {"application/json", "application/json+fhir", "application/fhir+json"})
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
-@Slf4j
 public class MetadataController implements InitializingBean {
 
   private final CapabilityStatementProperties capabilityStatementProperties;

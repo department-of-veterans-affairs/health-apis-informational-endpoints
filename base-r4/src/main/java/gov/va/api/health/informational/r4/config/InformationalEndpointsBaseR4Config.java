@@ -7,6 +7,11 @@ import gov.va.api.health.informational.r4.wellknown.WellKnownProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+/**
+ * This is a convenience class meant to import everything you'd need to support a capability
+ * statement under /metadata and a well-known endpoint under /.well-known/smart-configuration.
+ * Importing them piecemeal can still be done if desired.
+ */
 @Configuration
 @Import({
   WellKnownController.class,
@@ -14,9 +19,4 @@ import org.springframework.context.annotation.Import;
   WellKnownProperties.class,
   MetadataController.class
 })
-/**
- * This is a convenience class meant to import everything you'd need to support a capability
- * statement under /metadata and a well-known endpoint under /.well-known/smart-configuration.
- * Importing them piecemeal can still be done if desired.
- */
 public class InformationalEndpointsBaseR4Config {}

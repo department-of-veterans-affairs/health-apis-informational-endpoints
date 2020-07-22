@@ -18,9 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-  classes = {CapabilityUtilitiesTest.TestConfiguration.class, MetadataTestConfig.class},
-  initializers = ConfigFileApplicationContextInitializer.class
-)
+    classes = {CapabilityUtilitiesTest.TestConfiguration.class, MetadataTestConfig.class},
+    initializers = ConfigFileApplicationContextInitializer.class)
 public class CapabilityUtilitiesTest {
 
   @Autowired CapabilityStatementProperties capabilityStatementProperties;
