@@ -1,6 +1,6 @@
 {
     "id" : "health-api-test-service",
-    "resourceType" : "Capability",
+    "resourceType" : "CapabilityStatement",
     "version" : "2.0.0",
     "name" : "API Management Platform | Health - Test Service",
     "status" : "draft",
