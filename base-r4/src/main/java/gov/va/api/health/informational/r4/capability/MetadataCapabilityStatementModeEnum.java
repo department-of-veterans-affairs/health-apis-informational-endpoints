@@ -5,15 +5,13 @@ import lombok.Getter;
 
 /**
  * Enumeration to map a Metadata endpoint mode parameter value and the resource type of the returned
- * CapabilityStatement. TODO: Should not resource type "Capability" be "CapabilityStatement" to
- * fulfill FHIR specification? Until confirmation of one way or the other the resource type string
- * has been left as "Capability" for backward compatibility.
+ * CapabilityStatement.
  */
 @Getter
 @AllArgsConstructor
 public enum MetadataCapabilityStatementModeEnum {
-  FULL("full", "Capability"),
-  NORMATIVE("normative", "Capability"),
+  FULL("full", "CapabilityStatement"),
+  NORMATIVE("normative", "CapabilityStatement"),
   TERMINOLOGY("terminology", "TerminologyCapabilities");
   private final String parameter;
   private final String resourceType;
