@@ -9,6 +9,7 @@
   <artifactId>openapi</artifactId>
   <properties>
     <service-auto-config.version>7.0.20</service-auto-config.version>
+    <swagger-core.version>2.1.7</swagger-core.version>
   </properties>
   <dependencies>
     <dependency>
@@ -20,6 +21,17 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger.core.v3</groupId>
+      <artifactId>swagger-models</artifactId>
+      <version>${swagger-core.version}</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 </project>
