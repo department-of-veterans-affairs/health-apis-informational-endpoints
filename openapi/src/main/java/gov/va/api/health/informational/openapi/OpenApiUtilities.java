@@ -1,5 +1,7 @@
 package gov.va.api.health.informational.openapi;
 
+import static java.util.stream.Collectors.toMap;
+
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -25,9 +27,11 @@ public class OpenApiUtilities {
     var maps =
         openApiProperties.getComponents().getSecurityScheme().entrySet().stream()
             .map(entry -> securityScheme(entry.getKey(), entry.getValue()))
-            .findAny();
+            .flatMap(m -> m.entrySet().stream())
+            .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+
     Components components = new Components();
-    components.securitySchemes(maps.get());
+    components.securitySchemes(maps);
     return components;
   }
 

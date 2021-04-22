@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -56,7 +57,7 @@ public class OpenApiProperties implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
       Assert.notNull(url, "Server url must not be null");
-      if (description == null || description.isEmpty()) {
+      if (StringUtils.isBlank(description)) {
         log.warn("Server description is not set.");
       }
     }
