@@ -12,7 +12,6 @@ import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.experimental.UtilityClass;
@@ -26,9 +25,7 @@ public class OpenApiUtilities {
     }
     var maps =
         openApiProperties.getComponents().getSecurityScheme().entrySet().stream()
-            .map(entry -> securityScheme(entry.getKey(), entry.getValue()))
-            .flatMap(m -> m.entrySet().stream())
-            .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+            .collect(toMap(Map.Entry::getKey, e -> securityScheme(e.getValue())));
 
     Components components = new Components();
     components.securitySchemes(maps);
@@ -68,8 +65,8 @@ public class OpenApiUtilities {
     return openapi;
   }
 
-  private static Map<String, SecurityScheme> securityScheme(
-      String key, OpenApiProperties.SecurityScheme openApiSecurityScheme) {
+  private static SecurityScheme securityScheme(
+      OpenApiProperties.SecurityScheme openApiSecurityScheme) {
     OAuthFlow implicitFlow = new OAuthFlow();
     implicitFlow.authorizationUrl(openApiSecurityScheme.getAuthorizationUrl());
     implicitFlow.tokenUrl(openApiSecurityScheme.getTokenUrl());
@@ -80,7 +77,7 @@ public class OpenApiUtilities {
     securityScheme.type(openApiSecurityScheme.getType());
     securityScheme.in(openApiSecurityScheme.getIn());
     securityScheme.flows(flows);
-    return new HashMap<>(Map.of(key, securityScheme));
+    return securityScheme;
   }
 
   private static List<Server> servers(OpenApiProperties openApiProperties) {
