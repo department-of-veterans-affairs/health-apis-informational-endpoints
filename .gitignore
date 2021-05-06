@@ -1,8 +1,12 @@
 */target/
 !.mvn/wrapper/maven-wrapper.jar
 
+# Have stuff you don't want to commit but still find useful to hang around locally?
+*/.private/
+
 ### STS ###
 .apt_generated
+.checkstyle
 .classpath
 .factorypath
 .project
@@ -26,3 +30,6 @@
 
 target/
 /base-r4/nbproject/
+
+secrets.conf
+*.pem
