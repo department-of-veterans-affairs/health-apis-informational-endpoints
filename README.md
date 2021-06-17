@@ -1,3 +1,10 @@
+# DEPRECATED
+
+# THIS FUNCTIONALITY HAS MOVED TO https://github.com/department-of-veterans-affairs/health-apis-conformance-unifier
+
+----
+
+
 # health-apis-informational-endpoints
 Provides reusable endpoints meant to publish usability information about an API like Conformance and OpenAPI specs.
 
